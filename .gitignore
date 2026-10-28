@@ -18,6 +18,7 @@ __pycache__/
 *.sqlite3
 /media/
 /staticfiles/
+/logs/
 .DS_Store
 .idea/
 .vscode/

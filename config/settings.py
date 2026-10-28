@@ -155,7 +155,9 @@ TIME_ZONE = env("TIME_ZONE", default="Asia/Baku")
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
+# Explicit prefix: a relative "static/" would be prefixed only by the script prefix seen at
+# first access, which under gunicorn is before any request (so without the sub-path).
+STATIC_URL = f"{URL_PREFIX}/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 # instance/static (optional) wins over project static files with the same path
 STATICFILES_DIRS = [d for d in (INSTANCE_DIR / "static", BASE_DIR / "static") if d.is_dir()]
@@ -170,7 +172,7 @@ STORAGES = {
     },
 }
 
-MEDIA_URL = "media/"
+MEDIA_URL = f"{URL_PREFIX}/media/"
 MEDIA_ROOT = env("MEDIA_ROOT", default=str(INSTANCE_DIR / "media"))
 
 # Uploads: photos straight from a phone can be large; they are re-encoded on save.

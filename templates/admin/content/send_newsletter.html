@@ -1,0 +1,24 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="sa-card sa-narrow">
+    <h2 class="sa-h2">Abunəçilərə göndər</h2>
+    <p><strong>«{{ article.title }}»</strong> — {{ article.section }}</p>
+
+    {% if already_sent %}
+        <p class="sa-notice">Bu yazı artıq {{ already_sent.created_at|date:"d.m.Y H:i" }} tarixində {{ already_sent.recipients_count }} abunəçiyə göndərilib. Təkrar göndərmək mümkün deyil.</p>
+        <a class="sa-btn sa-btn-secondary" href="{{ change_url }}">Geri qayıt</a>
+    {% elif not article.is_public %}
+        <p class="sa-notice">Yazı hələ saytda görünmür (qaralama, planlaşdırılıb və ya bölmə gizlidir). Əvvəlcə dərc edin.</p>
+        <a class="sa-btn sa-btn-secondary" href="{{ change_url }}">Geri qayıt</a>
+    {% else %}
+        <p>«{{ article.section }}» bölməsini seçən (və ya bütün bölmələrə abunə olan) <strong>{{ recipients }}</strong> aktiv abunəçiyə e-poçt göndəriləcək.</p>
+        <p class="sa-muted">E-poçtda başlıq, xülasə və yazıya link olacaq. Bu əməliyyat yalnız bir dəfə edilə bilər.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="sa-btn" {% if not recipients %}disabled{% endif %}>Bəli, göndər</button>
+            <a class="sa-btn sa-btn-secondary" href="{{ change_url }}">Ləğv et</a>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

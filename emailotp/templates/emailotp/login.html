@@ -1,0 +1,39 @@
+{% extends "emailotp/base.html" %}
+{% load emailotp_tags %}
+
+{% block title %}{% t "emailotp.login.title" default="Sign in" %}{% endblock %}
+
+{% block content %}
+<div class="emailotp-card">
+  <h2 class="emailotp-title">{% t "emailotp.login.title" default="Sign in" %}</h2>
+  <p class="emailotp-subtitle">
+    {% t "emailotp.login.subtitle" default="Enter your email address and we'll send you a one-time code. No password needed." %}
+  </p>
+
+  {% include "emailotp/_messages.html" %}
+  {% include "emailotp/_errors.html" %}
+
+  <form method="post" class="emailotp-form">
+    {% csrf_token %}
+    <div class="emailotp-field">
+      <label class="emailotp-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      {{ form.email }}
+    </div>
+    <div class="emailotp-field emailotp-checkbox">
+      <label class="emailotp-label-inline" for="{{ form.remember.id_for_label }}">
+        {{ form.remember }}
+        {% t "emailotp.login.remember" default="Remember me — 30 days, otherwise 24 hours" %}
+      </label>
+    </div>
+    {{ form.captcha }}
+    <button type="submit" class="emailotp-button">
+      {% t "emailotp.login.submit" default="Send code" %}
+    </button>
+  </form>
+
+  <p class="emailotp-alt">
+    {% t "emailotp.login.no_account" default="No account yet?" %}
+    <a href="{% url 'emailotp:register' %}">{% t "emailotp.login.register_here" default="Register" %}</a>
+  </p>
+</div>
+{% endblock %}

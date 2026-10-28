@@ -1,0 +1,8 @@
+{% if block.heading %}<h2 class="block-heading">{{ block.heading }}</h2>{% endif %}
+<div class="text-image {% if block.text_wrap %}is-wrap{% else %}is-columns{% endif %} img-{{ block.image_position }}" style="--img-w: {{ block.image_width }}%">
+  <figure class="text-image-fig">
+    {% if block.image %}<img src="{{ block.image.url }}" alt="{{ block.image_alt }}" loading="lazy">{% endif %}
+    {% if block.caption %}<figcaption>{{ block.caption }}</figcaption>{% endif %}
+  </figure>
+  <div class="prose">{{ block.text|safe }}</div>
+</div>

@@ -1,0 +1,35 @@
+{% extends "emailotp/base.html" %}
+{% load emailotp_tags %}
+
+{% block title %}{% t "emailotp.login.title" default="Sign in" %}{% endblock %}
+
+{% block content %}
+<div class="emailotp-card">
+  <h2 class="emailotp-title">{% t "emailotp.login.title" default="Sign in" %}</h2>
+  <p class="emailotp-subtitle">
+    İdarəetmə panelinə giriş. E-poçtunuzu yazın — sonra şifrənizi və e-poçtunuza göndərilən 6 rəqəmli kodu daxil edəcəksiniz.
+  </p>
+
+  {% include "emailotp/_messages.html" %}
+  {% include "emailotp/_errors.html" %}
+
+  <form method="post" class="emailotp-form">
+    {% csrf_token %}
+    <div class="emailotp-field">
+      <label class="emailotp-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      {{ form.email }}
+    </div>
+    <div class="emailotp-field emailotp-checkbox">
+      <label class="emailotp-label-inline" for="{{ form.remember.id_for_label }}">
+        {{ form.remember }}
+        Bu cihazda məni yadda saxla (30 gün)
+      </label>
+    </div>
+    {{ form.captcha }}
+    <button type="submit" class="emailotp-button">
+      {% t "emailotp.login.submit" default="Send code" %}
+    </button>
+  </form>
+
+</div>
+{% endblock %}

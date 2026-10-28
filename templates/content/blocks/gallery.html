@@ -1,0 +1,7 @@
+{% if block.heading %}<h2 class="block-heading">{{ block.heading }}</h2>{% endif %}
+<div class="gallery">
+  {% for img in article.gallery.all %}
+  <figure><a href="{{ img.image.url }}" target="_blank" rel="noopener"><img src="{{ img.image.url }}" alt="{{ img.alt }}" loading="lazy"></a>{% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}</figure>
+  {% empty %}{% if preview_mode %}<p class="empty-note">Qalereyada şəkil yoxdur — yazının «Qalereya» bölməsindən əlavə edin.</p>{% endif %}
+  {% endfor %}
+</div>

@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: az\n"
+
+msgid "General"
+msgstr "Əsas"
+
+msgid "Choose file to upload"
+msgstr "Fayl seçin"
+
+msgid "Current file"
+msgstr "Hazırkı fayl"
+
+msgid "Filters"
+msgstr "Filtrlər"
+
+msgid "Apply Filters"
+msgstr "Filtrləri tətbiq et"
+
+msgid "Reset filters"
+msgstr "Filtrləri sıfırla"
+
+msgid "Clear all filters"
+msgstr "Bütün filtrləri təmizlə"
+
+msgid "Toggle filter"
+msgstr "Filtri aç/bağla"
+
+msgid "Recent searches"
+msgstr "Son axtarışlar"
+
+msgid "Type to search"
+msgstr "Axtarmaq üçün yazın"
+
+msgid "Search apps and models..."
+msgstr "Axtarış..."
+
+msgid "Return to site"
+msgstr "Sayta qayıt"
+
+msgid "View site"
+msgstr "Sayta bax"
+
+msgid "View on site"
+msgstr "Saytda bax"
+
+msgid "Bold"
+msgstr "Qalın"
+
+msgid "Italic"
+msgstr "Kursiv"
+
+msgid "Underlined"
+msgstr "Altından xətt"
+
+msgid "Strike"
+msgstr "Üstündən xətt"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "Unlink"
+msgstr "Linki sil"
+
+msgid "Enter an URL"
+msgstr "Linki yazın"
+
+msgid "Heading"
+msgstr "Başlıq"
+
+msgid "Paragraph"
+msgstr "Abzas"
+
+msgid "Quote"
+msgstr "Sitat"
+
+msgid "Code"
+msgstr "Kod"
+
+msgid "Ordered list"
+msgstr "Nömrəli siyahı"
+
+msgid "Unordered list"
+msgstr "Siyahı"
+
+msgid "Undo"
+msgstr "Geri al"
+
+msgid "Redo"
+msgstr "Təkrarla"
+
+msgid "Indent increase"
+msgstr "Girintini artır"
+
+msgid "Indent decrease"
+msgstr "Girintini azalt"
+
+msgid "Image preview"
+msgstr "Şəklin önizləməsi"
+
+msgid "Toggle sidebar"
+msgstr "Menyunu aç/bağla"
+
+msgid "Toggle dark/light mode"
+msgstr "Tünd/açıq rejim"
+
+msgid "Dark"
+msgstr "Tünd"
+
+msgid "Light"
+msgstr "Açıq"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "Revert to this version"
+msgstr "Bu versiyaya qayıt"
+
+msgid "Revert"
+msgstr "Geri qaytar"
+
+msgid "Go back"
+msgstr "Geri"
+
+msgid "Go back to history list"
+msgstr "Tarixçəyə qayıt"
+
+msgid "Change History"
+msgstr "Dəyişiklik tarixçəsi"
+
+msgid "Changed by"
+msgstr "Dəyişən"
+
+msgid "Comment"
+msgstr "Qeyd"
+
+msgid "Date/time"
+msgstr "Tarix/vaxt"
+
+msgid "Collapse"
+msgstr "Yığ"
+
+msgid "Select action"
+msgstr "Əməliyyat seçin"
+
+msgid "Select action to run"
+msgstr "Əməliyyat seçin"
+
+msgid "Run"
+msgstr "İcra et"
+
+msgid "Run the selected action"
+msgstr "Seçilmiş əməliyyatı icra et"
+
+msgid "Select value"
+msgstr "Seçin"
+
+msgid "This item will be deleted."
+msgstr "Bu element silinəcək."
+
+msgid "Click to cancel"
+msgstr "Ləğv etmək üçün klikləyin"
+
+msgid "Show counts"
+msgstr "Sayları göstər"
+
+msgid "Hide counts"
+msgstr "Sayları gizlət"
+
+msgid "No results found"
+msgstr "Heç nə tapılmadı"
+
+msgid "Nothing matched your search"
+msgstr "Axtarışa uyğun nəticə yoxdur"
+
+msgid "This page yielded into no results."
+msgstr "Bu səhifədə nəticə yoxdur."
+
+msgid "No data"
+msgstr "Məlumat yoxdur"
+
+msgid "Date from"
+msgstr "Tarixdən"
+
+msgid "Date to"
+msgstr "Tarixə"
+
+msgid "Welcome back to"
+msgstr "Xoş gəlmisiniz:"
+
+msgid "Clear selection"
+msgstr "Seçimi təmizlə"
+
+msgid "Close"
+msgstr "Bağla"
+
+msgid "Edit"
+msgstr "Redaktə et"
+
+msgid "New"
+msgstr "Yeni"
+
+msgid "Default"
+msgstr "Standart"
+
+msgid "Add row"
+msgstr "Sətir əlavə et"
+
+msgid "Add new item"
+msgstr "Yeni əlavə et"
+
+msgid "Create new record"
+msgstr "Yeni yarat"
+
+msgid "Remove from sorting"
+msgstr "Sıralamadan çıxar"
+
+msgid "Toggle sorting"
+msgstr "Sıralamanı dəyiş"
+
+msgid "Reset to default"
+msgstr "Standarta qaytar"
+
+msgid "Choose a date from the list below to revert to a previous version of this object."
+msgstr "Əvvəlki versiyaya qayıtmaq üçün aşağıdakı siyahıdan tarixi seçin."
+
+msgid "Choose a date from the list below to recover a deleted version of an object."
+msgstr "Silinmiş elementi bərpa etmək üçün aşağıdakı siyahıdan tarixi seçin."
+
+msgid "Press the save button below to revert to this version of the object."
+msgstr "Bu versiyaya qayıtmaq üçün aşağıdakı «Yadda saxla» düyməsini basın."
+
+msgid "Press the save button below to recover this version of the object."
+msgstr "Bu versiyanı bərpa etmək üçün aşağıdakı «Yadda saxla» düyməsini basın."
+
+msgid "There are no deleted objects to recover"
+msgstr "Bərpa ediləcək silinmiş element yoxdur"
+
+msgid "Toggle password visibility"
+msgstr "Şifrəni göstər/gizlət"
+
+msgid "Open command tool"
+msgstr "Axtarışı aç"
+msgid "Recover deleted %(name)s"
+msgstr "Silinmiş elementləri bərpa et: %(name)s"
+
+msgid "Recover %(name)s"
+msgstr "Bərpa et: %(name)s"
+
+msgid "Revert %(name)s"
+msgstr "Geri qaytar: %(name)s"
+

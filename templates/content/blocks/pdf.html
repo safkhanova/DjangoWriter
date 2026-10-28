@@ -1,0 +1,4 @@
+<div class="pdf-box">
+  <span class="pdf-icon">PDF</span>
+  <div><strong>{{ block.heading|default:"Sənəd" }}</strong><br>{% if block.file %}<a class="link-accent" href="{{ block.file.url }}" target="_blank" rel="noopener">{{ block.button_label|default:"Aç / yüklə" }} →</a>{% endif %}</div>
+</div>

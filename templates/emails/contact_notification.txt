@@ -1,0 +1,8 @@
+{% autoescape off %}Saytdan yeni mesaj
+
+Ad: {{ msg.name }}
+E-poçt: {{ msg.email }}{% if msg.phone %}
+Telefon: {{ msg.phone }}{% endif %}
+Mövzu: {{ msg.topic|default:"—" }}
+
+{{ msg.message }}{% endautoescape %}

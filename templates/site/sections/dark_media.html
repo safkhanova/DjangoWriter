@@ -1,0 +1,25 @@
+<section id="{{ section.slug }}" class="page-section theme-{{ section.theme }}{% if not section.is_visible %} is-hidden-preview{% endif %}">
+  <div class="container">
+    {% include "site/partials/section_head.html" %}
+    {% if articles %}
+    <div class="media-grid">
+      {% for article in articles %}
+        {% if article.youtube_id %}
+        <div class="video-card{% if not article.is_public %} is-hidden-preview{% endif %}">
+          {% include "site/partials/youtube.html" with video_id=article.youtube_id title=article.title %}
+          <a class="video-card-title" href="{{ article.get_absolute_url }}">{{ article.title }}</a> {% include "site/partials/article_flags.html" %}
+          <span class="meta">{{ article.category.name|default:"Video" }}{% if article.video_duration %} · {{ article.video_duration }}{% endif %}</span>
+        </div>
+        {% else %}
+        <a class="outline-card{% if not article.is_public %} is-hidden-preview{% endif %}" {% include "site/partials/article_link_attrs.html" %}>
+          <span class="eyebrow">{{ article.category.name|default:"Yazı" }}</span>{% include "site/partials/authorship_badge.html" %}
+          <strong class="serif-title-sm">{{ article.title }} {% include "site/partials/article_flags.html" %}</strong>
+          {% if article.excerpt %}<span class="muted">{{ article.excerpt|truncatewords:24 }}</span>{% endif %}
+          <span class="link-accent">Oxu →</span>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% else %}{% include "site/partials/empty.html" %}{% endif %}
+  </div>
+</section>

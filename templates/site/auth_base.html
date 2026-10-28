@@ -1,0 +1,16 @@
+{% extends "site/base.html" %}
+{% load static %}
+{% block title %}Giriş — {{ site.site_name }}{% endblock %}
+{% block extra_fonts %}
+  <meta name="robots" content="noindex">
+  <style>
+    :root {
+      --color-surface: #fff; --color-line: #e4e4df; --color-line-strong: #c9c9c2; --color-ink: #16171a;
+      --color-muted: #5b5d63; --color-brand: var(--accent); --color-brand-dark: #111;
+      --color-focus-ring: var(--accent-soft); --color-danger: #b42318; --color-danger-soft: #fdecea;
+      --color-success: #1f6b3a; --color-success-soft: #e3f4e8; --color-warning: #8a5a00; --color-warning-soft: #fff4d6;
+      --radius-sm: 6px; --radius-lg: 14px; --shadow-md: 0 8px 30px rgba(0,0,0,.06);
+    }
+    main { background: var(--bg-gray); padding: 1px 16px 40px; }
+  </style>
+{% endblock %}

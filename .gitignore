@@ -1,0 +1,24 @@
+# --- Private site data: everything about one particular site lives here -------------
+# .env (secrets, SMTP password), database, uploaded media, seed and import data,
+# notes, optional template/static overrides. Start a new one from instance.example/.
+/instance/
+/instanceSulhiyya/
+/instanceJavid/
+# any other site folder named instance<Name>/ is private too; the public template is not
+/instance*/
+!/instance.example/
+# which instance this checkout runs (see config/settings.py)
+/.instance
+
+# --- Local environment -----------------------------------------------------------------
+.venv/
+__pycache__/
+*.py[cod]
+.env
+*.sqlite3
+/media/
+/staticfiles/
+.DS_Store
+.idea/
+.vscode/
+.claude/

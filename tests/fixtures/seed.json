@@ -1,0 +1,14 @@
+{
+  "_help": "Site structure loaded into the test database by tests/runner.py.",
+  "site": {"site_name": "Test Müəllif"},
+  "contact_topics": ["Görüş", "Əməkdaşlıq", "Digər"],
+  "sections": [
+    {"slug": "edebiyyat", "title": "Ədəbiyyat", "layout": "featured_list", "categories": ["Hekayə", "Şeir", "Esse"]},
+    {"slug": "pr", "title": "PR", "layout": "card_grid", "theme": "gray", "categories": ["Media ilə əlaqələr", "Keys", "Təlim"]},
+    {"slug": "media-arxivi", "title": "Media arxivi", "layout": "table_archive", "show_category_filter": true,
+     "categories": ["Qəzet", "Televiziya", "Müsahibə"]},
+    {"slug": "kocluq", "title": "Koçluq", "layout": "dark_media", "theme": "dark", "highlight_card": true,
+     "cta_label": "Seansı təyin et", "cta_topic": "Görüş", "categories": ["Video", "Yazı"]}
+  ],
+  "hero": {"name": "Əsas", "active": true, "title_line_1": "Test başlıq —", "tags": ["Yazıçı"]}
+}

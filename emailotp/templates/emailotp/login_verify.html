@@ -1,0 +1,34 @@
+{% extends "emailotp/base.html" %}
+{% load emailotp_tags %}
+
+{% block title %}{% t "emailotp.login_verify.title" default="Enter your code" %}{% endblock %}
+
+{% block content %}
+<div class="emailotp-card">
+  <h2 class="emailotp-title">{% t "emailotp.login_verify.title" default="Enter your code" %}</h2>
+  <p class="emailotp-subtitle">
+    {% t "emailotp.verify.sent_to" default="We sent a code to:" %} <strong>{{ email }}</strong>
+  </p>
+
+      {% include "emailotp/_messages.html" %}
+  {% include "emailotp/_errors.html" %}
+
+  <form method="post" class="emailotp-form">
+    {% csrf_token %}
+    <div class="emailotp-field">
+      <label class="emailotp-label" for="{{ form.code.id_for_label }}">{{ form.code.label }}</label>
+      {{ form.code }}
+    </div>
+    <button type="submit" class="emailotp-button">
+      {% t "emailotp.login_verify.submit" default="Sign in" %}
+    </button>
+  </form>
+
+  <form method="post" action="{% url 'emailotp:login_resend' %}" class="emailotp-resend">
+    {% csrf_token %}
+    <button type="submit" class="emailotp-button emailotp-button-secondary">
+      {% t "emailotp.verify.resend" default="Send a new code" %}
+    </button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "emailotp/base.html" %}
+{% load emailotp_tags %}
+
+{% block title %}{% t "emailotp.register.title" default="Register" %}{% endblock %}
+
+{% block content %}
+<div class="emailotp-card">
+  <h2 class="emailotp-title">{% t "emailotp.register.title" default="Register" %}</h2>
+  <p class="emailotp-subtitle">
+    {% t "emailotp.register.subtitle" default="We'll email you a confirmation code to finish signing up." %}
+  </p>
+
+  {% include "emailotp/_messages.html" %}
+  {% include "emailotp/_errors.html" %}
+
+  <form method="post" class="emailotp-form">
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.name != "captcha" %}
+        <div class="emailotp-field">
+          <label class="emailotp-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+        </div>
+      {% endif %}
+    {% endfor %}
+    {{ form.captcha }}
+    <button type="submit" class="emailotp-button">
+      {% t "emailotp.register.submit" default="Send code" %}
+    </button>
+  </form>
+
+  <p class="emailotp-alt">
+    {% t "emailotp.register.have_account" default="Already have an account?" %}
+    <a href="{% url 'emailotp:login' %}">{% t "emailotp.register.login_here" default="Sign in" %}</a>
+  </p>
+</div>
+{% endblock %}

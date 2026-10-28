@@ -1,0 +1,6 @@
+{% autoescape off %}Salam{% if subscriber.name %}, {{ subscriber.name }}{% endif %}!
+
+{{ site.site_name }} saytında yeni yazılar haqqında xəbər almaq üçün abunəliyinizi təsdiqləyin:
+{{ subscriber.confirm_url }}
+
+Əgər abunə olmamısınızsa, bu e-poçta məhəl qoymayın.{% endautoescape %}

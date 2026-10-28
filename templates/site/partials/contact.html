@@ -1,0 +1,19 @@
+<section id="elaqe" class="page-section theme-gray">
+  <div class="container contact-grid">
+    <div>
+      <h2 class="section-title">{{ site.contact_title }}</h2>
+      {% if site.contact_text %}<p class="section-intro">{{ site.contact_text|linebreaksbr }}</p>{% endif %}
+      <ul class="contact-links">
+        {% if site.contact_email %}<li><a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a></li>{% endif %}
+        {% for l in social_links %}<li><a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.name }}</a></li>{% endfor %}
+      </ul>
+    </div>
+    <form method="post" action="{% url 'core:contact' %}" class="form" novalidate>
+      {% csrf_token %}
+      {% for field in contact_form.visible_fields %}
+        {% if field.name == "website" %}<div class="hp" aria-hidden="true">{{ field }}</div>{% else %}{% include "site/partials/field.html" %}{% endif %}
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Göndər</button>
+    </form>
+  </div>
+</section>

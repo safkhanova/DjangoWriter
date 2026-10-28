@@ -1,0 +1,10 @@
+{% extends base_template %}
+{% load static %}
+
+{% block extrahead %}
+  <link rel="stylesheet" href="{% static 'emailotp/css/emailotp.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'emailotp/js/emailotp.js' %}"></script>
+{% endblock %}

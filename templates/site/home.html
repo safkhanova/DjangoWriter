@@ -1,0 +1,51 @@
+{% extends "site/base.html" %}
+
+{% block extra_fonts %}{% if hero.fonts %}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?{{ hero.fonts.google|safe }}&display=swap">{% endif %}{% endblock %}
+
+{% block admin_edit_link %}{% if hero %}<a href="{% url 'admin:core_hero_change' hero.pk %}">Hero-nu redaktə et</a>{% endif %}{% endblock %}
+
+{% block content %}
+{% if hero %}
+<section class="hero{% if not hero.is_active %} is-hidden-preview{% endif %}" {% if hero.fonts %}style="--font-sans: {{ hero.fonts.sans|safe }}; --font-serif: {{ hero.fonts.serif|safe }};"{% endif %}>
+  {% if not hero.is_active %}<span class="preview-badge">Qaralama hero: «{{ hero.name }}»</span>{% endif %}
+  <div class="container">
+    <div class="hero-grid hero-portrait-{{ hero.portrait_position }}">
+      <div class="hero-text">
+        {% if hero_tags %}
+        <ul class="tag-list">{% for t in hero_tags %}<li class="tag">{{ t.label }}</li>{% endfor %}</ul>
+        {% endif %}
+        <h1 class="hero-title">
+          {{ hero.title_line_1 }}
+          {% if hero.title_line_2 %}<em>{{ hero.title_line_2 }}</em>{% endif %}
+        </h1>
+        {% if hero.intro_text %}<p class="hero-intro">{{ hero.intro_text|linebreaksbr }}</p>{% endif %}
+      </div>
+      {% if hero.portrait_position != "none" %}
+      <div class="hero-portrait">
+        {% if hero.portrait %}<img src="{{ hero.portrait.url }}" alt="{{ hero.portrait_alt }}">{% elif preview_mode %}<div class="placeholder">Portret şəkli yüklənməyib</div>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    {% if hero.show_section_cards and hero_sections %}
+    <div class="section-cards">
+      {% for s in hero_sections %}
+      <a href="#{{ s.slug }}" class="section-card{% if s.highlight_card %} is-dark{% endif %}{% if not s.is_visible %} is-hidden-preview{% endif %}">
+        <span class="section-card-num">{% if s.number_label %}{{ s.number_label }}{% else %}{{ forloop.counter|stringformat:"02d" }}{% endif %}</span>
+        <strong>{{ s.title }}</strong>
+        {% if s.card_subtitle %}<span class="section-card-sub">{{ s.card_subtitle }}</span>{% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{% for section in sections %}
+  {% include "site/sections/"|add:section.layout|add:".html" with articles=section.home_articles %}
+{% endfor %}
+
+{% if site.show_subscribe_box %}{% include "site/partials/subscribe.html" %}{% endif %}
+{% if site.show_contact_section %}{% include "site/partials/contact.html" %}{% endif %}
+{% endblock %}

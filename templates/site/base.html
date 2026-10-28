@@ -1,0 +1,75 @@
+{% load static %}<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.seo_title|default:site.site_name }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ site.seo_description }}{% endblock %}">
+  {% if preview_mode %}<meta name="robots" content="noindex">{% endif %}
+  <meta property="og:site_name" content="{{ site.site_name }}">
+  <meta property="og:title" content="{% block og_title %}{{ site.seo_title|default:site.site_name }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ site.seo_description }}{% endblock %}">
+  {% block og_image %}{% if site.og_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site.og_image.url }}">{% endif %}{% endblock %}
+  {% if site.favicon %}<link rel="icon" href="{{ site.favicon.url }}">{% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?{{ fonts.google|safe }}&display=swap">
+  {% block extra_fonts %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <style>
+    :root {
+      --font-sans: {{ fonts.sans|safe }};
+      --font-serif: {{ fonts.serif|safe }};
+      --accent: {{ colors.accent }};
+      --accent-soft: {{ colors.accent_soft }};
+      --accent-bright: {{ colors.accent_bright }};
+    }
+  </style>
+  {% block extrahead %}{% endblock %}
+  {% if site.analytics_snippet and not preview_mode %}{{ site.analytics_snippet|safe }}{% endif %}
+</head>
+<body class="{% if preview_mode %}has-preview-bar{% endif %}">
+  {% if preview_mode %}
+  <div class="preview-bar" role="status">
+    <span><strong>Önizləmə rejimi.</strong> Qaralamalar və gizli elementlər yalnız sizə görünür (ştrixli çərçivə ilə).</span>
+    <span class="preview-bar-links">
+      {% block admin_edit_link %}{% endblock %}
+      <a href="{% url 'admin:index' %}">İdarəetmə paneli</a>
+      <form method="post" action="{% url 'admin:logout' %}">{% csrf_token %}<button type="submit">Çıxış</button></form>
+    </span>
+  </div>
+  {% endif %}
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="{% url 'core:home' %}">
+        {% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site.site_name }}">{% else %}{{ site.site_name }}{% endif %}
+      </a>
+      <button class="nav-toggle" aria-label="Menyu" aria-expanded="false" data-nav-toggle><span></span><span></span></button>
+      <nav class="main-nav" data-nav>
+        {% for s in nav_sections %}
+          <a href="{% url 'core:home' %}#{{ s.slug }}" class="{% if not s.is_visible %}is-hidden-preview{% endif %}">{{ s.title }}</a>
+        {% endfor %}
+        {% if site.show_contact_section and site.nav_cta_label %}<a class="btn btn-dark" href="{% url 'core:home' %}#elaqe">{{ site.nav_cta_label }}</a>{% endif %}
+      </nav>
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="container flash-wrap">
+    {% for m in messages %}<p class="flash flash-{{ m.tags }}">{{ m }}</p>{% endfor %}
+  </div>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© {% now "Y" %} {{ site.site_name }}</span>
+      <span>{{ site.footer_text }}</span>
+    </div>
+  </footer>
+  <script src="{% static 'js/site.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

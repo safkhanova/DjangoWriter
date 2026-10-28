@@ -1,0 +1,24 @@
+<section id="abune" class="page-section theme-light subscribe-band">
+  <div class="container subscribe-grid">
+    <div>
+      <h2 class="section-title-sm">{{ site.subscribe_title }}</h2>
+      {% if site.subscribe_text %}<p class="section-intro">{{ site.subscribe_text }}</p>{% endif %}
+    </div>
+    <form method="post" action="{% url 'newsletter:subscribe' %}" class="form subscribe-form" novalidate>
+      {% csrf_token %}
+      <div class="subscribe-row">
+        {% with field=subscribe_form.email %}{% include "site/partials/field.html" %}{% endwith %}
+        {% with field=subscribe_form.name %}{% include "site/partials/field.html" %}{% endwith %}
+      </div>
+      {% if subscribe_form.sections.field.queryset.exists %}
+      <fieldset class="checks">
+        <legend>{{ subscribe_form.sections.label }}</legend>
+        {% for cb in subscribe_form.sections %}<label class="check">{{ cb.tag }} {{ cb.choice_label }}</label>{% endfor %}
+      </fieldset>
+      {% endif %}
+      <div class="hp" aria-hidden="true">{{ subscribe_form.website }}</div>
+      <button type="submit" class="btn btn-primary">Abunə ol</button>
+      <p class="fine-print">E-poçtunuza təsdiq linki göndəriləcək. İstənilən vaxt bir kliklə imtina edə bilərsiniz.</p>
+    </form>
+  </div>
+</section>

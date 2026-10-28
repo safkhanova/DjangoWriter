@@ -1,0 +1,7 @@
+{% extends "newsletter/simple.html" %}
+{% block title %}Abunəlik təsdiqləndi — {{ site.site_name }}{% endblock %}
+{% block notice %}
+<h1 class="section-title">Təşəkkürlər!</h1>
+<p>Abunəliyiniz təsdiqləndi. Yeni yazılar çıxanda <strong>{{ subscriber.email }}</strong> ünvanına xəbər göndəriləcək.</p>
+<p><a class="link-accent" href="{% url 'newsletter:manage' subscriber.token %}">Bölmə seçimlərini dəyiş</a> · <a class="link-accent" href="{% url 'core:home' %}">Ana səhifəyə qayıt</a></p>
+{% endblock %}

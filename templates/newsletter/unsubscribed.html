@@ -1,0 +1,6 @@
+{% extends "newsletter/simple.html" %}
+{% block title %}Abunəlikdən çıxdınız — {{ site.site_name }}{% endblock %}
+{% block notice %}
+<h1 class="section-title">Abunəlikdən çıxdınız</h1>
+<p>Artıq yeni yazılar haqqında e-poçt almayacaqsınız.{% if subscriber %} Fikrinizi dəyişsəniz, <a class="link-accent" href="{% url 'newsletter:manage' subscriber.token %}">bölmələri seçib yenidən yadda saxlayın</a>.{% endif %}</p>
+{% endblock %}

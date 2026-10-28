@@ -1,0 +1,15 @@
+<div class="table-wrap">
+  <table class="archive-table" data-filter-target="{{ section.slug }}">
+    <thead><tr><th>İl</th><th>Media</th><th>Başlıq</th><th>Növ</th></tr></thead>
+    <tbody>
+    {% for article in articles %}
+      <tr data-category="{{ article.category.slug|default:'' }}" class="{% if not article.is_public %}is-hidden-preview{% endif %}">
+        <td class="muted">{{ article.source_year|default:article.publish_at.year }}</td>
+        <td class="muted">{{ article.source_name }}</td>
+        <td><a class="strong-link" {% include "site/partials/article_link_attrs.html" %}>{{ article.title }}</a> {% include "site/partials/authorship_badge.html" %} {% include "site/partials/article_flags.html" %}{% if article.original_author %}<span class="meta">{{ article.original_author }}</span>{% endif %}</td>
+        <td><a class="link-accent small" {% include "site/partials/article_link_attrs.html" %}>{{ article.category.name|default:"Bax" }}{% if article.link_mode == "pdf" %} · PDF{% elif article.link_mode == "external" %} ↗{% else %} →{% endif %}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

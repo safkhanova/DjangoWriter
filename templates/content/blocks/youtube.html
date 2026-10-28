@@ -1,0 +1,2 @@
+{% if block.youtube_id %}{% include "site/partials/youtube.html" with video_id=block.youtube_id title=block.caption|default:article.title %}{% endif %}
+{% if block.caption %}<p class="caption">{{ block.caption }}</p>{% endif %}

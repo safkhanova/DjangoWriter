@@ -1,0 +1,28 @@
+<section id="{{ section.slug }}" class="page-section theme-{{ section.theme }}{% if not section.is_visible %} is-hidden-preview{% endif %}">
+  <div class="container">
+    {% include "site/partials/section_head.html" %}
+    {% if articles %}
+    <div class="featured-grid">
+      {% with article=articles.0 %}
+      <article class="featured-card{% if not article.is_public %} is-hidden-preview{% endif %}">
+        <span class="eyebrow">{% if article.is_featured %}Seçilmiş {{ article.category.name|default:"yazı"|lower }}{% else %}{{ article.category.name|default:"Son yazı" }}{% endif %}</span>
+        <h3 class="serif-title"><a {% include "site/partials/article_link_attrs.html" %}>{{ article.title }}</a> {% include "site/partials/article_flags.html" %}</h3>
+        {% if article.excerpt %}<p>{{ article.excerpt }}</p>{% endif %}
+        <div class="card-links">
+          <a class="link-accent" {% include "site/partials/article_link_attrs.html" %}>Oxu →</a>
+          {% if article.audio_file %}<a class="link-accent" href="{{ article.get_absolute_url }}#dinle">Dinlə ▸</a>{% endif %}
+        </div>
+      </article>
+      {% endwith %}
+      <ul class="side-list">
+        {% for article in articles|slice:"1:" %}
+        <li class="{% if not article.is_public %}is-hidden-preview{% endif %}">
+          <a class="serif-link" {% include "site/partials/article_link_attrs.html" %}>{{ article.title }}</a> {% include "site/partials/article_flags.html" %}
+          <span class="meta">{% if article.publish_at %}{{ article.publish_at|date:"Y" }}{% endif %}{% if article.category %} · {{ article.category.name }}{% endif %}{% if article.audio_file %} · Səsli ▸{% endif %}</span>{% include "site/partials/authorship_badge.html" %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}{% include "site/partials/empty.html" %}{% endif %}
+  </div>
+</section>

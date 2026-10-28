@@ -1,0 +1,6 @@
+<a class="article-card{% if article.is_featured %} is-featured{% endif %}{% if not article.is_public %} is-hidden-preview{% endif %}" {% include "site/partials/article_link_attrs.html" %}>
+  {% if article.cover_image %}<img class="article-card-img" src="{{ article.cover_image.url }}" alt="{{ article.cover_alt }}" loading="lazy">{% endif %}
+  <span class="eyebrow-muted">{{ article.category.name|default:article.section.title }} {% include "site/partials/authorship_badge.html" %}</span>
+  <strong class="article-card-title">{{ article.title }} {% include "site/partials/article_flags.html" %}</strong>
+  {% if article.excerpt %}<span class="article-card-excerpt">{{ article.excerpt|truncatewords:28 }}</span>{% endif %}
+</a>

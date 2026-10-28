@@ -1,0 +1,74 @@
+{% extends "site/base.html" %}
+{% block title %}{{ article.seo_title|default:article.title }} — {{ site.site_name }}{% endblock %}
+{% block meta_description %}{{ article.seo_description|default:article.excerpt|truncatechars:160 }}{% endblock %}
+{% block og_title %}{{ article.title }}{% endblock %}
+{% block og_description %}{{ article.seo_description|default:article.excerpt|truncatechars:200 }}{% endblock %}
+{% block og_image %}{% if article.cover_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.cover_image.url }}">{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block admin_edit_link %}<a href="{% url 'admin:content_article_change' article.pk %}">Bu yazını redaktə et</a>{% endblock %}
+
+{% block content %}
+<article class="article{% if not article.is_public %} is-hidden-preview{% endif %}">
+  <header class="article-header container narrow">
+    <p class="breadcrumbs"><a href="{% url 'core:home' %}">Ana səhifə</a> / <a href="{{ section.get_absolute_url }}">{{ section.title }}</a></p>
+    {% if preview_mode and not article.is_public %}
+      <p class="preview-note">{% if article.status == "draft" %}Qaralama — ziyarətçilər bu səhifəni görmür.{% elif article.is_scheduled %}Planlaşdırılıb: {{ article.publish_at|date:"d.m.Y H:i" }} tarixində görünəcək.{% else %}Bölmə gizli olduğu üçün ziyarətçilər görmür.{% endif %}</p>
+    {% endif %}
+    <span class="eyebrow">{{ article.category.name|default:section.title }}</span> {% include "site/partials/authorship_badge.html" %}
+    <h1 class="article-title">{{ article.title }}</h1>
+    {% if article.excerpt %}<p class="article-lead">{{ article.excerpt }}</p>{% endif %}
+    <p class="meta">
+      {% if not article.is_own and article.original_author %}Müəllif: {{ article.original_author }} · {% endif %}{{ article.publish_at|date:"j E Y" }}
+      {% if article.source_name %} · {{ article.source_name }}{% if article.source_year %}, {{ article.source_year }}{% endif %}{% endif %}
+      {% if article.reading_minutes %} · {{ article.reading_minutes }} dəq oxu{% endif %}
+    </p>
+  </header>
+
+  {% if article.cover_image and article.show_cover %}
+  <figure class="article-cover container"><img src="{{ article.cover_image.url }}" alt="{{ article.cover_alt }}"></figure>
+  {% endif %}
+
+  <div class="article-body container narrow">
+    {% if article.audio_file %}
+    <div class="audio-box" id="dinle"><span class="eyebrow">Səsli oxu</span><audio controls preload="none" src="{{ article.audio_file.url }}"></audio></div>
+    {% endif %}
+    {% if article.youtube_id %}{% include "site/partials/youtube.html" with video_id=article.youtube_id title=article.title %}{% endif %}
+
+    {% for block in article.blocks.all %}
+      <div class="block block-{{ block.type }}{% if not block.is_visible %} is-hidden-preview{% endif %}">
+        {% if not block.is_visible %}<span class="preview-badge">Gizli blok</span>{% endif %}
+        {% include block.template_name %}
+      </div>
+    {% endfor %}
+
+    {% if not article.blocks.all and article.external_url %}
+      <p class="muted">Tam mətn hələ saytda yerləşdirilməyib — orijinal mənbədə oxuyun:</p>
+    {% endif %}
+    {% if article.external_url %}
+    <aside class="source-box">
+      <span class="eyebrow">{% if article.is_own %}İlk dəfə dərc olunub{% else %}Mənbə{% endif %}</span>
+      <p>
+        <a href="{{ article.external_url }}" target="_blank" rel="noopener">{{ article.source_name|default:article.external_url }} ↗</a>
+        {% if article.original_author %} · {{ article.original_author }}{% endif %}
+        · {{ article.publish_at|date:"j E Y" }}
+      </p>
+    </aside>
+    {% endif %}
+    {% if article.pdf_file %}
+      <p><a class="btn btn-ghost" href="{{ article.pdf_file.url }}" target="_blank" rel="noopener">PDF-i aç</a></p>
+    {% endif %}
+
+    {% with tags=article.tags.all %}{% if tags %}
+      <ul class="tag-list article-tags">{% for t in tags %}<li class="tag">{{ t.name }}</li>{% endfor %}</ul>
+    {% endif %}{% endwith %}
+  </div>
+</article>
+
+{% if related %}
+<section class="page-section theme-gray">
+  <div class="container">
+    <div class="section-head"><h2 class="section-title-sm">{{ section.title }} bölməsindən digər yazılar</h2><a class="link-accent" href="{{ section.get_absolute_url }}">{{ section.see_all_label|default:"Hamısı →" }}</a></div>
+    <div class="card-grid">{% for article in related %}{% include "site/partials/article_card.html" %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "site/base.html" %}
+{% block title %}{{ section.seo_title|default:section.title }} — {{ site.site_name }}{% endblock %}
+{% block meta_description %}{{ section.seo_description|default:section.intro_text|truncatechars:160 }}{% endblock %}
+{% block admin_edit_link %}<a href="{% url 'admin:content_section_change' section.pk %}">Bölməni redaktə et</a>{% endblock %}
+
+{% block content %}
+<section class="page-section theme-light{% if not section.is_visible %} is-hidden-preview{% endif %}">
+  <div class="container">
+    <p class="breadcrumbs"><a href="{% url 'core:home' %}">Ana səhifə</a> / {{ section.title }}</p>
+    <div class="section-head">
+      <div>
+        <h1 class="section-title">{{ section.title }}{% if not section.is_visible %} <span class="preview-badge-inline">Gizli bölmə</span>{% endif %}</h1>
+        {% if section.intro_text %}<p class="section-intro">{{ section.intro_text|linebreaksbr }}</p>{% endif %}
+      </div>
+      {% if section.cta_label %}<a class="btn btn-accent" href="{{ section.cta_href }}">{{ section.cta_label }}</a>{% endif %}
+    </div>
+
+    {% if categories %}
+    <nav class="filter-pills">
+      <a class="pill{% if not active_category %} is-active{% endif %}" href="?{% if active_authorship %}kim={{ active_authorship }}{% endif %}">Hamısı</a>
+      {% for c in categories %}<a class="pill{% if active_category == c %} is-active{% endif %}" href="?nov={{ c.slug }}{% if active_authorship %}&kim={{ active_authorship }}{% endif %}">{{ c.name }}</a>{% endfor %}
+    </nav>
+    {% endif %}
+
+    {% if authorship_choices|length > 1 %}
+    <nav class="filter-pills filter-pills-secondary">
+      <a class="pill{% if not active_authorship %} is-active{% endif %}" href="?{% if active_category %}nov={{ active_category.slug }}{% endif %}">Hamısı</a>
+      {% for value, label in authorship_choices %}<a class="pill{% if active_authorship == value %} is-active{% endif %}" href="?kim={{ value }}{% if active_category %}&nov={{ active_category.slug }}{% endif %}">{{ label }}</a>{% endfor %}
+    </nav>
+    {% endif %}
+
+    {% if articles %}
+      {% if section.layout == "table_archive" %}
+        {% include "site/partials/archive_table.html" %}
+      {% else %}
+        <div class="card-grid">{% for article in articles %}{% include "site/partials/article_card.html" %}{% endfor %}</div>
+      {% endif %}
+    {% else %}
+      <p class="empty-note">Hələ yazı yoxdur.</p>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination">
+      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}{% if active_category %}&nov={{ active_category.slug }}{% endif %}{% if active_authorship %}&kim={{ active_authorship }}{% endif %}">← Əvvəlki</a>{% endif %}
+      <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}{% if active_category %}&nov={{ active_category.slug }}{% endif %}{% if active_authorship %}&kim={{ active_authorship }}{% endif %}">Növbəti →</a>{% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

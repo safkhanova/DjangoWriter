@@ -1,0 +1,7 @@
+{% load emailotp_tags %}{% t "emailotp.email.greeting" default="Hello!" %}
+
+{% t "emailotp.email.code_intro" default="Your verification code for" %} {{ site_name }}: {{ code }}
+
+{% t "emailotp.email.code_validity" default="The code is valid for" %} {{ minutes }} {% t "emailotp.email.minutes" default="minutes." %}
+
+{% t "emailotp.email.ignore" default="If you did not request this, you can ignore this message." %}

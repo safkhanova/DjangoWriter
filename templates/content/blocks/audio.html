@@ -1,0 +1,1 @@
+<div class="audio-box">{% if block.heading %}<span class="eyebrow">{{ block.heading }}</span>{% endif %}{% if block.file %}<audio controls preload="none" src="{{ block.file.url }}"></audio>{% endif %}{% if block.caption %}<p class="caption">{{ block.caption }}</p>{% endif %}</div>

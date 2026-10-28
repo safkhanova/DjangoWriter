@@ -1,0 +1,55 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+
+{% block title %}İdarəetmə paneli | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+    {% include "unfold/helpers/site_branding.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="sa-dash">
+    <section>
+        <h2 class="sa-h2">Salam{% if user.first_name %}, {{ user.first_name }}{% endif %}! Nə etmək istəyirsiniz?</h2>
+        <div class="sa-actions">
+            {% for a in quick_actions %}
+                <a class="sa-action" href="{{ a.url }}"{% if a.new_tab %} target="_blank" rel="noopener"{% endif %}>
+                    <span class="material-symbols-outlined">{{ a.icon }}</span>
+                    <span>{{ a.title }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="sa-stats">
+        {% for s in stats %}
+            {% if s.url %}<a class="sa-stat" href="{{ s.url }}">{% else %}<div class="sa-stat">{% endif %}
+                <div class="sa-stat-value">{{ s.value }}</div>
+                <div class="sa-stat-title">{{ s.title }}</div>
+            {% if s.url %}</a>{% else %}</div>{% endif %}
+        {% endfor %}
+    </section>
+
+    {% if not active_hero or hidden_sections %}
+    <section class="sa-notice">
+        {% if not active_hero %}<p>⚠ Aktiv hero yoxdur — ana səhifənin yuxarı hissəsi boş görünür. <a href="{% url 'admin:core_hero_changelist' %}">Hero versiyalarına keçin</a> və birini aktiv edin.</p>{% endif %}
+        {% for s in hidden_sections %}<p>👁 «{{ s.title }}» bölməsi gizlidir — ziyarətçilər görmür. <a href="{% url 'admin:content_section_change' s.pk %}">Dəyiş</a></p>{% endfor %}
+    </section>
+    {% endif %}
+
+    <div class="sa-cols">
+        <section class="sa-card">
+            <h3 class="sa-h3">Qaralamalar</h3>
+            {% for a in drafts %}
+                <a class="sa-row" href="{% url 'admin:content_article_change' a.pk %}"><span>{{ a.title }}</span><small>{{ a.section }}</small></a>
+            {% empty %}<p class="sa-muted">Qaralama yoxdur.</p>{% endfor %}
+        </section>
+        <section class="sa-card">
+            <h3 class="sa-h3">Son dəyişdirilən yazılar</h3>
+            {% for a in recent %}
+                <a class="sa-row" href="{% url 'admin:content_article_change' a.pk %}"><span>{{ a.title }}</span><small>{{ a.updated_at|date:"d.m.Y H:i" }}</small></a>
+            {% empty %}<p class="sa-muted">Hələ yazı yoxdur. <a href="{% url 'admin:content_article_add' %}">İlk yazını yaradın</a>.</p>{% endfor %}
+        </section>
+    </div>
+</div>
+{% endblock %}

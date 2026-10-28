@@ -1,0 +1,3 @@
+{% extends "site/base.html" %}
+{% block title %}Abunə — {{ site.site_name }}{% endblock %}
+{% block content %}{% with subscribe_form=form %}{% include "site/partials/subscribe.html" %}{% endwith %}{% endblock %}

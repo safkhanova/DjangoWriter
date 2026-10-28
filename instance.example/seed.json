@@ -1,0 +1,54 @@
+{
+  "_help": "Initial structure of the site, loaded by `manage.py setup_site`. Edit freely before the first run; afterwards everything is editable in the admin. Re-running never overwrites admin edits (unless --overwrite).",
+
+  "site": {
+    "site_name": "Ad Soyad",
+    "font_preset": "inter_fraunces",
+    "color_preset": "green",
+    "seo_title": "Ad Soyad — yazıçı",
+    "seo_description": "Hekayələr, esselər, məqalələr və media arxivi.",
+    "footer_text": "Yazıçı · Jurnalist",
+    "contact_text": "Əməkdaşlıq, müsahibə və ya görüş üçün yazın."
+  },
+
+  "contact_topics": ["Əməkdaşlıq", "Media sorğusu", "Görüş / təqdimat", "Digər"],
+
+  "social_links": [
+    {"name": "Instagram", "icon": "instagram", "url": "https://instagram.com/"}
+  ],
+
+  "sections": [
+    {
+      "slug": "edebiyyat", "title": "Ədəbiyyat", "number_label": "01",
+      "card_subtitle": "Hekayələr, şeirlər, esselər", "layout": "featured_list", "theme": "light",
+      "see_all_label": "Bütün yazılar →",
+      "categories": ["Hekayə", "Şeir", "Esse"]
+    },
+    {
+      "slug": "meqaleler", "title": "Məqalələr", "number_label": "02",
+      "card_subtitle": "Publisistika və rəylər", "layout": "card_grid", "theme": "gray",
+      "categories": ["Məqalə", "Rəy"]
+    },
+    {
+      "slug": "media-arxivi", "title": "Media arxivi", "number_label": "03",
+      "card_subtitle": "Müsahibələr və haqqımda yazılanlar", "layout": "table_archive", "theme": "light",
+      "show_category_filter": true,
+      "categories": ["Qəzet", "Televiziya", "Müsahibə"]
+    },
+    {
+      "slug": "video", "title": "Video", "number_label": "04",
+      "card_subtitle": "Çıxışlar və görüşlər", "layout": "dark_media", "theme": "dark",
+      "highlight_card": true, "cta_label": "Görüş təyin et", "cta_topic": "Görüş / təqdimat",
+      "categories": ["Video", "Yazı"]
+    }
+  ],
+
+  "hero": {
+    "name": "Əsas",
+    "active": true,
+    "title_line_1": "Ad Soyad —",
+    "title_line_2": "hekayələr, esselər və məqalələr.",
+    "intro_text": "Bir-iki cümləlik təqdimat: kimsiniz, nə yazırsınız, oxucu burada nə tapacaq.",
+    "tags": ["Yazıçı", "Jurnalist"]
+  }
+}

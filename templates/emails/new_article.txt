@@ -1,0 +1,10 @@
+{% autoescape off %}{{ article.section.title }}{% if article.category %} · {{ article.category.name }}{% endif %}
+
+{{ article.title }}
+
+{{ article.excerpt }}
+
+Oxu: {{ article_url }}
+
+--
+Bölmələri dəyiş və ya abunəlikdən çıx: {{ subscriber.manage_url }}{% endautoescape %}

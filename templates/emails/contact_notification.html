@@ -1,0 +1,7 @@
+{% extends "emails/base.html" %}
+{% block body %}
+<p><strong>Saytdan yeni mesaj</strong></p>
+<p>Ad: {{ msg.name }}<br>E-poçt: <a href="mailto:{{ msg.email }}">{{ msg.email }}</a>{% if msg.phone %}<br>Telefon: {{ msg.phone }}{% endif %}<br>Mövzu: {{ msg.topic|default:"—" }}</p>
+<p style="white-space:pre-line;background:#f6f6f4;padding:14px;border-radius:8px">{{ msg.message }}</p>
+<p style="color:#777;font-size:13px">Bu e-poçta «Cavab ver» düyməsi ilə göndərənə birbaşa cavab yaza bilərsiniz.</p>
+{% endblock %}

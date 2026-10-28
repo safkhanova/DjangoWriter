@@ -1,0 +1,4 @@
+<figure class="image-block align-{{ block.image_position }}" style="--img-w: {{ block.image_width }}%">
+  {% if block.image %}<img src="{{ block.image.url }}" alt="{{ block.image_alt }}" loading="lazy">{% endif %}
+  {% if block.caption %}<figcaption>{{ block.caption }}</figcaption>{% endif %}
+</figure>

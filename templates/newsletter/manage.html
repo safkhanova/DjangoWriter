@@ -1,0 +1,16 @@
+{% extends "newsletter/simple.html" %}
+{% block title %}Abunəlik ayarları — {{ site.site_name }}{% endblock %}
+{% block notice %}
+<h1 class="section-title">Abunəlik ayarları</h1>
+<p class="muted">{{ subscriber.email }}{% if subscriber.unsubscribed_at %} — hazırda abunə deyilsiniz{% endif %}</p>
+<form method="post" class="form">
+  {% csrf_token %}
+  <fieldset class="checks">
+    <legend>{{ form.sections.label }}</legend>
+    {% for cb in form.sections %}<label class="check">{{ cb.tag }} {{ cb.choice_label }}</label>{% endfor %}
+    <p class="fine-print">{{ form.sections.help_text }}</p>
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Yadda saxla</button>
+  {% if not subscriber.unsubscribed_at %}<button type="submit" name="unsubscribe" value="1" class="btn btn-ghost">Abunəlikdən çıx</button>{% endif %}
+</form>
+{% endblock %}

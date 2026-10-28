@@ -1,0 +1,14 @@
+<section id="{{ section.slug }}" class="page-section theme-{{ section.theme }}{% if not section.is_visible %} is-hidden-preview{% endif %}">
+  <div class="container">
+    {% include "site/partials/section_head.html" %}
+    {% if articles %}
+    {% if section.show_category_filter %}
+    <div class="filter-pills" data-filter-group="{{ section.slug }}">
+      <button type="button" class="pill is-active" data-filter="">Hamısı</button>
+      {% for c in section.categories.all %}<button type="button" class="pill" data-filter="{{ c.slug }}">{{ c.name }}</button>{% endfor %}
+    </div>
+    {% endif %}
+    {% include "site/partials/archive_table.html" %}
+    {% else %}{% include "site/partials/empty.html" %}{% endif %}
+  </div>
+</section>

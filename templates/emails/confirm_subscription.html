@@ -1,0 +1,7 @@
+{% extends "emails/base.html" %}
+{% block body %}
+<p>Salam{% if subscriber.name %}, {{ subscriber.name }}{% endif %}!</p>
+<p>{{ site.site_name }} saytında yeni yazılar haqqında xəbər almaq üçün abunəliyinizi təsdiqləyin:</p>
+<p><a href="{{ subscriber.confirm_url }}" style="display:inline-block;background:{{ site.colors.accent }};color:#fff;text-decoration:none;padding:11px 20px;border-radius:8px;font-weight:600">Abunəliyi təsdiqlə</a></p>
+<p style="color:#777;font-size:13px">Əgər abunə olmamısınızsa, bu e-poçta məhəl qoymayın — heç nə göndərilməyəcək.</p>
+{% endblock %}

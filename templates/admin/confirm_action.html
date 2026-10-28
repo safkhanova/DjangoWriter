@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="sa-card sa-narrow">
+    <h2 class="sa-h2">{{ title }}</h2>
+    <p>{{ message }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="sa-btn">{{ button }}</button>
+        <a class="sa-btn sa-btn-secondary" href="{{ back_url }}">Ləğv et</a>
+    </form>
+</div>
+{% endblock %}

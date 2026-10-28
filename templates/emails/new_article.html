@@ -1,0 +1,8 @@
+{% extends "emails/base.html" %}
+{% block body %}
+<p style="margin:0 0 6px;color:{{ site.colors.accent }};font-size:12px;text-transform:uppercase;letter-spacing:.08em">{{ article.section.title }}{% if article.category %} · {{ article.category.name }}{% endif %}</p>
+<h1 style="margin:0 0 12px;font-size:24px;font-family:Georgia,serif;font-weight:500">{{ article.title }}</h1>
+{% if article.excerpt %}<p style="margin:0 0 20px">{{ article.excerpt }}</p>{% endif %}
+<a href="{{ article_url }}" style="display:inline-block;background:{{ site.colors.accent }};color:#fff;text-decoration:none;padding:11px 20px;border-radius:8px;font-weight:600">Oxu →</a>
+{% endblock %}
+{% block footer %}Bu e-poçtu {{ site.site_name }} saytında abunə olduğunuz üçün alırsınız. <a href="{{ subscriber.manage_url }}" style="color:#777">Bölmələri dəyiş və ya abunəlikdən çıx</a>.{% endblock %}

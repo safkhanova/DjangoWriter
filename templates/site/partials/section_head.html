@@ -1,0 +1,10 @@
+<div class="section-head">
+  <div>
+    <h2 class="section-title">{{ section.title }}{% if not section.is_visible %} <span class="preview-badge-inline">Gizli bölmə</span>{% endif %}</h2>
+    {% if section.intro_text %}<p class="section-intro">{{ section.intro_text|linebreaksbr }}</p>{% endif %}
+  </div>
+  <div class="section-head-actions">
+    {% if section.cta_label %}<a class="btn btn-accent" href="{{ section.cta_href }}">{{ section.cta_label }}</a>{% endif %}
+    {% if section.see_all_label and articles %}<a class="link-accent" href="{{ section.get_absolute_url }}">{{ section.see_all_label }}</a>{% endif %}
+  </div>
+</div>

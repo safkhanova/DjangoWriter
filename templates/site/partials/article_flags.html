@@ -1,0 +1,1 @@
+{% if preview_mode %}{% if article.status == "draft" %}<span class="preview-badge-inline">Qaralama</span>{% elif article.is_scheduled %}<span class="preview-badge-inline">Planlaşdırılıb</span>{% endif %}{% endif %}{% if article.is_pinned %}<span class="pin" title="Sabitlənib">📌</span>{% endif %}

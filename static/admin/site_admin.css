@@ -1,0 +1,43 @@
+/* Custom admin pieces (dashboard, help boxes). Unfold's compiled CSS only ships
+   the utility classes it uses itself, so our own components are plain CSS. */
+.sa-dash { display: flex; flex-direction: column; gap: 24px; }
+.sa-h2 { font-size: 1.25rem; font-weight: 600; margin: 0 0 14px; color: var(--color-font-important-light, #111); }
+.sa-h3 { font-size: 1rem; font-weight: 600; margin: 0 0 10px; }
+.dark .sa-h2, .dark .sa-h3 { color: #f3f4f6; }
+.sa-actions { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.sa-action {
+  display: flex; align-items: center; gap: 10px; padding: 16px; border-radius: 10px;
+  background: #fff; border: 1px solid #e5e7eb; font-weight: 600; color: inherit; text-decoration: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.sa-action:hover { border-color: var(--color-primary-500, #1f6b5c); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.sa-action .material-symbols-outlined { color: var(--color-primary-600, #1f6b5c); font-size: 26px; }
+.sa-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.sa-stat { padding: 16px; border-radius: 10px; background: #fff; border: 1px solid #e5e7eb; color: inherit; text-decoration: none; }
+.sa-stat-value { font-size: 1.8rem; font-weight: 700; color: var(--color-primary-600, #1f6b5c); }
+.sa-stat-title { font-size: .85rem; opacity: .75; }
+.sa-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.sa-card { padding: 18px; border-radius: 10px; background: #fff; border: 1px solid #e5e7eb; }
+.sa-narrow { max-width: 640px; }
+.sa-card p { margin: 0 0 12px; line-height: 1.5; }
+.sa-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px dashed #e5e7eb; color: inherit; text-decoration: none; }
+.sa-row:hover span { color: var(--color-primary-600, #1f6b5c); }
+.sa-row small, .sa-muted { opacity: .65; }
+.sa-notice { padding: 12px 16px; border-radius: 10px; background: #fff8e6; border: 1px solid #f5d38a; color: #6b4e00; }
+.sa-notice p { margin: 4px 0; }
+.sa-notice a { text-decoration: underline; font-weight: 600; }
+.sa-help {
+  margin: 0 0 12px; padding: 12px 14px; border-radius: 8px; line-height: 1.55; font-size: .9rem;
+  background: var(--color-primary-50, #eefaf6); border: 1px solid var(--color-primary-200, #b9e4d7);
+}
+.sa-btn {
+  display: inline-block; padding: 9px 18px; border-radius: 8px; border: 0; cursor: pointer; font-weight: 600;
+  background: var(--color-primary-600, #1f6b5c); color: #fff; text-decoration: none; margin-right: 8px;
+}
+.sa-btn[disabled] { opacity: .5; cursor: not-allowed; }
+.sa-btn-secondary { background: #e5e7eb; color: #111; }
+.dark .sa-action, .dark .sa-stat, .dark .sa-card { background: #111827; border-color: #374151; }
+.dark .sa-help { background: #0f2a24; border-color: #1f4d42; }
+.dark .sa-notice { background: #3a2e0a; border-color: #6b5413; color: #fde68a; }
+/* Block inline: fields irrelevant to the chosen block type are hidden by block_fields.js */
+.sa-hidden-field { display: none !important; }

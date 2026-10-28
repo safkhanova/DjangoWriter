@@ -4,7 +4,7 @@ from io import StringIO
 from pathlib import Path
 
 from django.conf import settings
-from django.core.management import call_command
+from django.core.management import CommandError, call_command
 from django.test import TestCase
 
 from content.models import Article, Category, Section
@@ -120,3 +120,23 @@ class TextImportTests(TestCase):
         self.assertContains(response, "İlk dəfə dərc olunub")
         self.assertContains(response, 'href="https://kulis.az/x"')
         self.assertEqual(article.href, article.get_absolute_url())
+
+
+class MediaImportTests(TestCase):
+    def test_cover_image_copied_from_json_folder(self):
+        with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as media:
+            data = {"articles": [{"section": "edebiyyat", "title": "Şəkilli", "cover_image": "portraits/p.webp"}]}
+            Path(tmp, "data.json").write_text(json.dumps(data), encoding="utf-8")
+            Path(tmp, "media", "portraits").mkdir(parents=True)
+            Path(tmp, "media", "portraits", "p.webp").write_bytes(b"RIFF0000WEBP")
+            with self.settings(MEDIA_ROOT=media):
+                call_command("import_content", f"{tmp}/data.json", stdout=StringIO())
+                self.assertEqual(Path(media, "portraits", "p.webp").read_bytes(), b"RIFF0000WEBP")
+                self.assertEqual(Article.objects.get(title="Şəkilli").cover_image.name, "portraits/p.webp")
+
+    def test_media_path_outside_folder_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = {"articles": [{"section": "edebiyyat", "title": "X", "cover_image": "../secret.webp"}]}
+            Path(tmp, "data.json").write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaises(CommandError):
+                call_command("import_content", f"{tmp}/data.json", stdout=StringIO())

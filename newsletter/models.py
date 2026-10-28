@@ -46,13 +46,13 @@ class Subscriber(models.Model):
         return self.is_confirmed and self.unsubscribed_at is None
 
     def confirm_url(self) -> str:
-        return settings.SITE_URL + reverse("newsletter:confirm", args=[self.token])
+        return settings.SITE_ORIGIN + reverse("newsletter:confirm", args=[self.token])
 
     def manage_url(self) -> str:
-        return settings.SITE_URL + reverse("newsletter:manage", args=[self.token])
+        return settings.SITE_ORIGIN + reverse("newsletter:manage", args=[self.token])
 
     def one_click_unsubscribe_url(self) -> str:
-        return settings.SITE_URL + reverse("newsletter:one_click_unsubscribe", args=[self.token])
+        return settings.SITE_ORIGIN + reverse("newsletter:one_click_unsubscribe", args=[self.token])
 
 
 class NewsletterIssue(models.Model):

@@ -9,6 +9,7 @@ and optional `templates/` / `static/` overrides.
 
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import environ
 from django.templatetags.static import static
@@ -58,8 +59,20 @@ if not SECRET_KEY:
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
-# Public base URL, used in e-mails (confirmation / unsubscribe links).
+# Public base URL, used in e-mails (confirmation / unsubscribe links). It may include a
+# path (https://example.com/writer) to serve the site under a sub-path of another domain;
+# the reverse proxy must then strip that prefix before passing requests on.
 SITE_URL = env("SITE_URL").rstrip("/")
+_site_url = urlsplit(SITE_URL)
+# Scheme + host only: reverse() already includes the sub-path, so absolute links are SITE_ORIGIN + reverse(...).
+SITE_ORIGIN = f"{_site_url.scheme}://{_site_url.netloc}"
+URL_PREFIX = _site_url.path.rstrip("/")  # "" when the site is at the domain root
+if URL_PREFIX:
+    FORCE_SCRIPT_NAME = URL_PREFIX
+    # Own cookie names and paths, so this site never reads or overwrites the host site's cookies.
+    SESSION_COOKIE_NAME = "dw_sessionid"
+    CSRF_COOKIE_NAME = "dw_csrftoken"
+    SESSION_COOKIE_PATH = CSRF_COOKIE_PATH = f"{URL_PREFIX}/"
 # Short site label for the admin header and outgoing login e-mails, e.g. "example.com".
 SITE_LABEL = env("SITE_LABEL", default=SITE_URL.split("://")[-1])
 # Admin lives on a non-default path to reduce automated login attempts.
@@ -197,6 +210,8 @@ LOGOUT_REDIRECT_URL = "core:home"
 SESSION_COOKIE_AGE = 60 * 60 * 12
 # Must stay database-backed: session revocation deletes rows (core/sessions.py).
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# Flash messages in the session, not in a cookie that the host site could share.
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 EMAILOTP_SITE_NAME = SITE_LABEL
 EMAILOTP_BASE_TEMPLATE = "site/auth_base.html"
 EMAILOTP_LOGIN_ABSOLUTE_URL = f"{SITE_URL}/login/"
@@ -244,7 +259,7 @@ UNFOLD = {
     "SITE_TITLE": "Sayt idarəetməsi",
     "SITE_HEADER": "Sayt idarəetməsi",
     "SITE_SUBHEADER": SITE_LABEL,
-    "SITE_URL": "/",
+    "SITE_URL": f"{URL_PREFIX}/",
     "SITE_SYMBOL": "edit_note",
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,

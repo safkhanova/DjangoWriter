@@ -8,7 +8,7 @@ from .utils import is_preview_user
 
 def site(request):
     """Globals for every public template: settings, design tokens, navigation, preview flag."""
-    if request.path.startswith("/" + settings.ADMIN_URL):
+    if request.path_info.startswith("/" + settings.ADMIN_URL):
         return {}
     site_settings = SiteSettings.load()
     return {

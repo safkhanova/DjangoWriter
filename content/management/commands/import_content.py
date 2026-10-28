@@ -11,6 +11,10 @@ and for bulk content imports (instance/content/*.json). All keys are optional:
   hero            {"name", "title_line_1", ..., "tags": [...], "active": true}
   articles        [{"section", "category", "title", ...}]
 
+Images named in "cover_image" (a path inside MEDIA_ROOT, e.g. "portraits/x.webp") are
+copied from <json dir>/media/<path> when the site does not have them yet, so a site's
+pictures can live in its git repository next to the JSON.
+
 Idempotent: running it twice updates the same rows instead of duplicating them.
 Articles are matched by (section, slug of title). Imported articles are drafts unless
 --publish is given; entries with "force_draft" always stay drafts.
@@ -31,6 +35,8 @@ import json
 import re
 from pathlib import Path
 
+from django.core.files import File
+from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils.dateparse import parse_datetime
@@ -43,7 +49,7 @@ from core.utils import az_slugify
 PLACEHOLDERS = {"", "Adınız Soyadınız"}
 ARTICLE_FIELDS = (
     "excerpt", "source_name", "source_year", "external_url", "is_featured", "is_pinned",
-    "authorship", "original_author",
+    "authorship", "original_author", "cover_image", "cover_alt", "show_cover",
 )
 
 
@@ -65,6 +71,7 @@ class Command(BaseCommand):
         data = json.loads(file.read_text(encoding="utf-8"))
         self.publish, self.overwrite, self.replace_texts = publish, overwrite, replace_texts
         self.texts_dir = Path(texts) if texts else file.parent / "texts"
+        self.media_dir = file.parent / "media"
 
         with transaction.atomic():
             self.import_site(data.get("site", {}))
@@ -126,7 +133,7 @@ class Command(BaseCommand):
             hero.tags.all().delete()
             HeroTag.objects.bulk_create(HeroTag(hero=hero, label=label, order=i) for i, label in enumerate(tags))
         state = "active" if hero.is_active else "inactive (activate it in the admin)"
-        self.log(f"hero «{hero.name}»: {'created' if created else 'kept'}, {state}")
+        self.log(f"hero «{hero.name}»: {'created' if created else ('updated' if self.overwrite else 'kept')}, {state}")
 
     def import_sections(self, items):
         if isinstance(items, dict):  # older format: {"slug": {field: value}}
@@ -170,6 +177,8 @@ class Command(BaseCommand):
             article = Article(section=section, slug=slug, title=item["title"])
 
         article.category = category
+        if item.get("cover_image"):
+            self.import_media(item["cover_image"])
         for field in ARTICLE_FIELDS:
             if field in item:
                 setattr(article, field, item[field])
@@ -185,6 +194,19 @@ class Command(BaseCommand):
         body = self.import_body(article, item)
         note = f" — {item['note']}" if item.get("note") else ""
         self.log(f"{'+' if created else '~'} [{section.slug}] {article.title} ({article.get_status_display()}, {body}){note}")
+
+    def import_media(self, name: str):
+        if Path(name).is_absolute() or ".." in Path(name).parts:
+            raise CommandError(f"Invalid media path: {name}")
+        if default_storage.exists(name):
+            return
+        source = self.media_dir / name
+        if not source.is_file():
+            self.stderr.write(f"  image {name} not found in {self.media_dir}")
+            return
+        with source.open("rb") as fh:
+            default_storage.save(name, File(fh))
+        self.log(f"+ image {name}")
 
     def find_text(self, article, item) -> Path | None:
         candidates = [self.texts_dir / item["text_file"]] if item.get("text_file") else [

@@ -336,3 +336,20 @@ class ArticleCategoryChoiceTests(TestCase):
         response = self.client.get(reverse("admin:content_article_add"))
         self.assertContains(response, 'id="categories-by-section"')
         self.assertContains(response, "article_form.js")
+
+
+class SubPathTests(TestCase):
+    """SITE_URL with a path (https://host/writer): links carry the prefix, cookies stay scoped."""
+
+    def test_links_and_admin_detection_under_prefix(self):
+        from django.urls import clear_script_prefix, set_script_prefix
+
+        set_script_prefix("/writer/")
+        try:
+            response = self.client.get("/robots.txt")
+            self.assertContains(response, "Disallow: /writer/login/")
+            response = self.client.get("/")
+            self.assertContains(response, 'href="/writer/')
+            self.assertIn("Content-Security-Policy", response)
+        finally:
+            clear_script_prefix()

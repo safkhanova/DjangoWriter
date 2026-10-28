@@ -30,7 +30,7 @@ class SecurityHeadersMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        if not request.path.startswith("/" + settings.ADMIN_URL):
+        if not request.path_info.startswith("/" + settings.ADMIN_URL):
             response.setdefault("Content-Security-Policy", self.csp)
         response.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()")
         return response

@@ -3,7 +3,7 @@ import logging
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import get_script_prefix, reverse
 from django.views.decorators.http import require_GET, require_POST
 
 from content.models import Article, visible_sections
@@ -86,8 +86,8 @@ def contact(request):
 def robots_txt(request):
     lines = [
         "User-agent: *",
-        "Disallow: /login/",
-        "Disallow: /abune/",
+        f"Disallow: {get_script_prefix()}login/",
+        f"Disallow: {get_script_prefix()}abune/",
         f"Sitemap: {request.build_absolute_uri(reverse('sitemap'))}",
     ]
     return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")

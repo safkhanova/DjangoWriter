@@ -109,6 +109,35 @@ Una volta verificato che tutto funziona in HTTPS, attiva HSTS: `SECURE_HSTS_SECO
 Con un CDN o Cloudflare davanti: `EMAILOTP_IP_HEADER=HTTP_CF_CONNECTING_IP`.
 Gli statici li serve WhiteNoise (da gunicorn), non serve un blocco `/static/`.
 
+### Sito in un sotto-percorso di un altro dominio
+
+Per esempio, finché il dominio proprio non c'è: `SITE_URL=https://example.org/scrittore` nel `.env`.
+Da quel percorso Django ricava da solo diverse impostazioni:
+- `FORCE_SCRIPT_NAME`: tutti i link, gli statici e i media prendono il prefisso;
+- `SITE_ORIGIN`, usato per i link nelle e-mail;
+- cookie con nomi propri (`dw_sessionid`, `dw_csrftoken`) e path `/scrittore/`, così non toccano i cookie del sito ospite.
+
+Nel vhost del dominio ospite, prima di `location /`, il proxy **toglie** il prefisso
+(nota lo `/` finale in `proxy_pass`):
+
+```nginx
+location = /scrittore { return 301 /scrittore/; }
+location /scrittore/static/ { alias /srv/example.com/staticfiles/; }
+location /scrittore/media/  { alias /srv/example.com/instance/media/; }
+location /scrittore/ {
+    client_max_body_size 20M;
+    proxy_pass http://127.0.0.1:8005/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+`ALLOWED_HOSTS` e `CSRF_TRUSTED_ORIGINS` sono quelli del dominio ospite. Quando arriva il dominio
+proprio, cambia `SITE_URL`, `ALLOWED_HOSTS` e `CSRF_TRUSTED_ORIGINS` e crea il suo vhost.
+I contenuti non cambiano: i link interni sono generati, non salvati. Gli utenti dovranno solo
+rifare il login, perché i nomi dei cookie tornano quelli standard.
+
 ## 5. Cron
 
 `crontab -u site -e`

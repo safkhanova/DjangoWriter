@@ -93,7 +93,7 @@ def queue_article_newsletter(article, user=None) -> NewsletterIssue:
     site = SiteSettings.load()
     subject = f"Yeni yazı: {article.title}"
     issue = NewsletterIssue.objects.create(article=article, subject=subject, created_by=user)
-    article_url = settings.SITE_URL + article.get_absolute_url()
+    article_url = settings.SITE_ORIGIN + article.get_absolute_url()
 
     rows = []
     for subscriber in Subscriber.objects.interested_in(article.section):

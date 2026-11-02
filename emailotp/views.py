@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.hashers import make_password
 from django.db import IntegrityError, transaction
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import NoReverseMatch
 from django.views.decorators.http import require_POST
@@ -137,7 +138,8 @@ def _start_code_stage(request, email, ip, flow):
 
 
 def _ctx(extra=None):
-    base = {'base_template': conf.BASE_TEMPLATE}
+    base = {'base_template': conf.BASE_TEMPLATE,
+            'registration_enabled': conf.REGISTRATION_ENABLED}
     if extra:
         base.update(extra)
     return base
@@ -145,6 +147,19 @@ def _ctx(extra=None):
 
 # --- registration -----------------------------------------------------------
 
+def _registration_enabled(view):
+    # second line of defence: urls.py does not install these views when
+    # registration is off, but a project could still route to them
+    def wrapped(request, *args, **kwargs):
+        if not conf.REGISTRATION_ENABLED:
+            raise Http404
+        return view(request, *args, **kwargs)
+    wrapped.__name__ = view.__name__
+    wrapped.__doc__ = view.__doc__
+    return wrapped
+
+
+@_registration_enabled
 def register(request):
     if request.user.is_authenticated:
         return _redirect_after_login(request)
@@ -195,6 +210,7 @@ def register(request):
     return render(request, 'emailotp/register.html', _ctx({'form': form}))
 
 
+@_registration_enabled
 def register_verify(request):
     email = request.session.get('emailotp_email')
     if not email or request.session.get('emailotp_flow') != 'register':
@@ -234,6 +250,7 @@ def register_verify(request):
                   _ctx({'form': form, 'email': email}))
 
 
+@_registration_enabled
 @require_POST
 def register_resend(request):
     email = request.session.get('emailotp_email')

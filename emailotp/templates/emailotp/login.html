@@ -31,9 +31,11 @@
     </button>
   </form>
 
+  {% if registration_enabled %}
   <p class="emailotp-alt">
     {% t "emailotp.login.no_account" default="No account yet?" %}
     <a href="{% url 'emailotp:register' %}">{% t "emailotp.login.register_here" default="Register" %}</a>
   </p>
+  {% endif %}
 </div>
 {% endblock %}

@@ -33,6 +33,11 @@ STAFF_REQUIRE_PASSWORD = getattr(settings, 'EMAILOTP_STAFF_REQUIRE_PASSWORD', Tr
 # create users with username=email (the default here) leave this alone.
 LOOKUP_FIELD = getattr(settings, 'EMAILOTP_LOOKUP_FIELD', 'username')
 
+# Public self-registration (/register/…). Turn off for sites where accounts
+# are only created by an administrator: the register URLs are not installed,
+# the views refuse to run and the login page drops its "Register" link.
+REGISTRATION_ENABLED = getattr(settings, 'EMAILOTP_REGISTRATION_ENABLED', True)
+
 # Registration collects a name and password. Turn off for pure passwordless
 # signup where the account has no usable password at all.
 REGISTER_COLLECT_PASSWORD = getattr(settings, 'EMAILOTP_REGISTER_COLLECT_PASSWORD', True)

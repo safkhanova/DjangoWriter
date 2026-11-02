@@ -73,7 +73,7 @@ instance.example/  modello pubblico di un'istanza (vedi sopra)
 | `/abune/tesdiq/<uuid>/` | conferma iscrizione (double opt-in) | |
 | `/abune/<uuid>/` | gestione preferenze / disiscrizione | link presente in ogni e-mail |
 | `/abune/<uuid>/imtina/` | one-click unsubscribe RFC 8058 | POST, csrf_exempt |
-| `/login/…` | emailotp | `/register/*` → redirect a `/login/` |
+| `/login/…` | emailotp | nessuna registrazione pubblica (`/register/*` → 404) |
 | `/<ADMIN_URL>` | Django admin | default `admin/`; `admin/login/` passa per emailotp |
 | `/sitemap.xml`, `/robots.txt` | | |
 | `/<section>/` | `content.views.section_detail` | `?nov=<category-slug>`, `?page=` |

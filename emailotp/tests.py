@@ -1,3 +1,4 @@
+from unittest import skipUnless
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -5,10 +6,13 @@ from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from . import services
+from . import conf, services
 
 
 User = get_user_model()
+
+# the register URLs are not installed when the project turns registration off
+requires_registration = skipUnless(conf.REGISTRATION_ENABLED, 'EMAILOTP_REGISTRATION_ENABLED is False')
 
 
 @override_settings(
@@ -48,6 +52,7 @@ class BlockedUserFlowTests(TestCase):
             is_active=False,
         )
 
+    @requires_registration
     @patch('emailotp.conf.USE_CAPTCHA', False)
     @patch('emailotp.views.services.issue_otp')
     @patch('emailotp.views.services.notify_existing_account')
@@ -82,6 +87,7 @@ class BlockedUserFlowTests(TestCase):
         )
         issue_otp.assert_not_called()
 
+    @requires_registration
     @patch('emailotp.views.services.consume_otp', return_value=(True, None))
     def test_blocked_email_is_not_reactivated_after_verification(self, _consume):
         session = self.client.session
@@ -111,6 +117,7 @@ class BlockedUserFlowTests(TestCase):
     EMAILOTP_REGISTER_COLLECT_PASSWORD=False,
 )
 class ExistingOtpFlowRegressionTests(TestCase):
+    @requires_registration
     @patch('emailotp.conf.ACTIVATE_EXISTING_INACTIVE', True)
     @patch('emailotp.conf.USE_CAPTCHA', False)
     @patch('emailotp.views.services.issue_otp', return_value=True)
@@ -134,6 +141,7 @@ class ExistingOtpFlowRegressionTests(TestCase):
         )
         issue_otp.assert_called_once()
 
+    @requires_registration
     @patch('emailotp.conf.USE_CAPTCHA', False)
     @patch('emailotp.views.services.issue_otp', return_value=True)
     def test_new_registration_still_requests_an_otp(self, issue_otp):
@@ -149,6 +157,7 @@ class ExistingOtpFlowRegressionTests(TestCase):
         )
         issue_otp.assert_called_once()
 
+    @requires_registration
     @patch('emailotp.conf.USE_CAPTCHA', False)
     @patch('emailotp.views.services.issue_otp')
     @patch('emailotp.views.services.notify_existing_account')

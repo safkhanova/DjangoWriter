@@ -169,6 +169,7 @@ behind one address, and the per-code counter does the real anti-guessing work.
 |---|---|---|
 | `EMAILOTP_STAFF_REQUIRE_PASSWORD` | `True` | staff enter a password before the code |
 | `EMAILOTP_LOOKUP_FIELD` | `'username'` | User field holding the email address |
+| `EMAILOTP_REGISTRATION_ENABLED` | `True` | public signup; `False` removes the `/register/` URLs and the login page link (accounts only from the admin) |
 | `EMAILOTP_REGISTER_COLLECT_NAME` | `True` | ask for a name at signup |
 | `EMAILOTP_REGISTER_COLLECT_PASSWORD` | `True` | ask for a password at signup |
 | `EMAILOTP_LOGIN_AFTER_REGISTER` | `True` | sign in on registration verify |

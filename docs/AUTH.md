@@ -28,8 +28,11 @@ Integrazione in `config/urls.py`:
 
 - `admin.site.login = staff_member_required(admin.site.login, login_url="emailotp:login")`: il form
   password di Django admin (che salterebbe il codice) non è raggiungibile.
-- `/register/`, `/register/verify/`, `/register/resend/` → redirect a `/login/`: il sito non ha
-  account pubblici. Override di `templates/emailotp/login.html` senza il link «Registrati».
+- Il sito non ha account pubblici: `EMAILOTP_REGISTRATION_ENABLED = False` in `settings.py`.
+  Le URL `/register/`, `/register/verify/` e `/register/resend/` non sono installate (404) e le
+  view di registrazione rispondono 404 anche se richiamate. Gli utenti si creano solo dall'admin
+  o con `manage.py create_editor`. L'override `templates/emailotp/login.html` non ha il link
+  «Registrati».
 
 > ⚠ **Prima di chiudere la sessione SSH dopo il deploy** fai un login completo. Se l'SMTP non
 > funziona il codice non arriva e l'admin resta inaccessibile. Rimedio: `manage.py shell` →

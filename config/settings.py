@@ -270,7 +270,7 @@ UNFOLD = {
     "SHOW_BACK_BUTTON": True,
     "DASHBOARD_CALLBACK": "core.dashboard.dashboard_callback",
     "STYLES": [lambda request: static("admin/site_admin.css")],
-    "SCRIPTS": [lambda request: static("admin/block_fields.js")],
+    "SCRIPTS": [lambda request: static("admin/block_fields.js"), lambda request: static("admin/admin_mobile.js")],
     "COLORS": {
         "primary": {
             "50": "oklch(97% .02 170)",

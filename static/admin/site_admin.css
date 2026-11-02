@@ -41,3 +41,47 @@
 .dark .sa-notice { background: #3a2e0a; border-color: #6b5413; color: #fde68a; }
 /* Block inline: fields irrelevant to the chosen block type are hidden by block_fields.js */
 .sa-hidden-field { display: none !important; }
+
+/* --- Phones (labels set by admin_mobile.js) ------------------------------------ */
+/* Long unbroken values (hashes, URLs) must not widen the page. */
+.readonly, .field-row .help { overflow-wrap: anywhere; }
+
+@media (max-width: 1023px) {
+  /* tabular inlines: Unfold hides the header row, so show each column name above its field */
+  td.field-tabular[data-label]::before {
+    content: attr(data-label); display: block; margin-bottom: 4px;
+    font-size: .75rem; font-weight: 600; opacity: .7; white-space: normal;
+  }
+}
+
+@media (max-width: 767px) {
+  .sa-actions, .sa-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sa-action { padding: 12px; font-size: .9rem; }
+  .sa-cols { grid-template-columns: minmax(0, 1fr); }
+
+  /* change lists: one card per row instead of a wide table */
+  #result_list thead { display: none; }
+  #result_list, #result_list tbody { display: block; width: 100%; }
+  #result_list tr.data-row { display: flex; flex-wrap: wrap; align-items: center; padding: 8px 12px 12px; }
+  #result_list tr.data-row > td, #result_list tr.data-row > th {
+    border-top: 0 !important; padding: 4px 6px; min-width: 0; white-space: normal;
+  }
+  #result_list tr.data-row > th { flex: 1 1 0; order: 0; font-weight: 600; font-size: 1rem; }
+  #result_list tr.data-row > th, #result_list tr.data-row > th * {
+    white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+    height: auto !important; max-height: none !important; -webkit-line-clamp: unset !important;
+  }
+  #result_list tr.data-row > td:not([class*="field-"]) { order: 0; flex: 0 0 auto; width: auto; }
+  #result_list tr.data-row > td:not([class*="field-"]) > div { margin: 0; }
+  #result_list tr.data-row > td.field-actions_holder { order: 0; flex: 0 0 auto; width: auto; margin-left: auto; }
+  #result_list tr.data-row > td[class*="field-"]:not(.field-actions_holder) {
+    order: 1; flex: 1 1 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    text-align: end;
+  }
+  #result_list tr.data-row > td[data-label][class*="field-"]::before {
+    content: attr(data-label); flex: 0 1 45%; text-align: start; font-size: .8rem; opacity: .65;
+  }
+  #result_list tr.data-row > .sa-empty-cell { display: none !important; }
+  #result_list tbody + tbody tr.data-row { border-top: 1px solid #e5e7eb; }
+  .dark #result_list tbody + tbody tr.data-row { border-top-color: #374151; }
+}

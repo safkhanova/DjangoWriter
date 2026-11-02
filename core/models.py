@@ -135,7 +135,7 @@ class Hero(OptimizedImagesMixin, models.Model):
     )
     show_section_cards = models.BooleanField(
         "Bölmə kartlarını göstər", default=True,
-        help_text="Hero altında bölmələrin nömrəli kartları (01, 02 ...).",
+        help_text="Hero altında bölmələrin kartları (ad və qısa təsvir).",
     )
     updated_at = models.DateTimeField("Yenilənib", auto_now=True)
 

@@ -46,6 +46,10 @@
 /* Long unbroken values (hashes, URLs) must not widen the page. */
 .readonly, .field-row .help { overflow-wrap: anywhere; }
 
+@media (min-width: 768px) {
+  #result_list td.sa-order-cell { display: none; }
+}
+
 @media (max-width: 1023px) {
   /* tabular inlines: Unfold hides the header row, so show each column name above its field */
   td.field-tabular[data-label]::before {
@@ -82,6 +86,8 @@
     content: attr(data-label); flex: 0 1 45%; text-align: start; font-size: .8rem; opacity: .65;
   }
   #result_list tr.data-row > .sa-empty-cell { display: none !important; }
+  #result_list tr.data-row > td.sa-order-cell { height: auto; overflow: visible; }
+  #result_list tr.data-row > td.sa-order-cell input { width: 5rem; min-width: 0; }
   #result_list tbody + tbody tr.data-row { border-top: 1px solid #e5e7eb; }
   .dark #result_list tbody + tbody tr.data-row { border-top-color: #374151; }
 }

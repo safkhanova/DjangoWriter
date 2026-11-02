@@ -20,6 +20,15 @@
     const table = document.getElementById("result_list");
     if (!table) return;
     const labels = [...table.querySelectorAll("thead th")].map(headerLabel);
+    // drag and drop is unreliable on touch screens: phones get the order number field instead
+    const orderField = table.dataset.orderingField;
+    if (orderField) {
+      table.querySelectorAll(`tr.data-row > td.field-${orderField}`).forEach((td) => {
+        // Unfold's layered "!hidden" cannot be overridden from CSS; sa-order-cell hides it on desktop instead
+        td.classList.remove("!hidden");
+        td.classList.add("sa-order-cell");
+      });
+    }
     table.querySelectorAll("tr.data-row").forEach((row) => {
       [...row.children].forEach((cell, i) => {
         if (labels[i]) cell.dataset.label = labels[i];

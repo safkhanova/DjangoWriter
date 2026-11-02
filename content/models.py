@@ -76,7 +76,7 @@ class Section(models.Model):
     )
     number_label = models.CharField(
         "Kartdakı nömrə", max_length=6, blank=True,
-        help_text="Məsələn «01». Boş qalsa, sıraya görə avtomatik qoyulur.",
+        help_text="Məsələn «01». Boş qalsa, kartda nömrə göstərilmir.",
     )
     card_subtitle = models.CharField(
         "Kartdakı qısa təsvir", max_length=120, blank=True, help_text="Məsələn: «Hekayələr və səsli oxu».",
@@ -156,6 +156,10 @@ class Category(models.Model):
 
     section = models.ForeignKey(Section, verbose_name="Bölmə", on_delete=models.CASCADE, related_name="categories")
     name = models.CharField("Ad", max_length=60)
+    public_name = models.CharField(
+        "Saytda görünən ad", max_length=60, blank=True,
+        help_text="Boş qalsa, «Ad» göstərilir. Admində öz adınız qalır, saytda bu ad görünür.",
+    )
     slug = models.SlugField("Ünvan", max_length=80, blank=True)
     order = models.PositiveIntegerField("Sıra", default=0, db_index=True)
 
@@ -167,6 +171,11 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.section.title} → {self.name}"
+
+    @property
+    def label(self):
+        """Name shown on the public site."""
+        return self.public_name or self.name
 
     def save(self, *args, **kwargs):
         if not self.slug:

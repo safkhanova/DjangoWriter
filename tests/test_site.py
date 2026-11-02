@@ -1,12 +1,13 @@
 from datetime import timedelta
 from io import BytesIO
 
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import AnonymousUser, Group, User
 from django.core import mail
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
-from django.urls import reverse
+from django.http import Http404
+from django.test import RequestFactory, TestCase, override_settings
+from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 from PIL import Image
 
@@ -232,6 +233,19 @@ class ContactTests(TestCase):
         self.assertFalse(ContactMessage.objects.exists())
 
 
+class CategoryLabelTests(TestCase):
+    def test_public_name_shown_on_site_admin_name_kept(self):
+        from content.models import Category, Section
+
+        section = Section.objects.create(title="Arxiv", layout="table_archive", show_category_filter=True)
+        cat = Category.objects.create(section=section, name="Qəzet", public_name="Mətbuat")
+        self.assertEqual(cat.label, "Mətbuat")
+        self.assertEqual(Category(section=section, name="TV").label, "TV")
+        html = self.client.get(section.get_absolute_url()).content.decode()
+        self.assertIn("Mətbuat", html)
+        self.assertNotIn("Qəzet", html)
+
+
 class AdminTests(TestCase):
     def test_admin_login_goes_through_email_otp(self):
         response = self.client.get(reverse("admin:login"))
@@ -239,7 +253,20 @@ class AdminTests(TestCase):
                              fetch_redirect_response=False)
 
     def test_registration_disabled(self):
-        self.assertRedirects(self.client.get("/register/"), reverse("emailotp:login"), fetch_redirect_response=False)
+        for url in ("/register/", "/register/verify/"):
+            self.assertEqual(self.client.get(url).status_code, 404)
+        self.assertEqual(self.client.post("/register/resend/").status_code, 404)
+        with self.assertRaises(NoReverseMatch):
+            reverse("emailotp:register")
+        self.assertNotContains(self.client.get(reverse("emailotp:login")), "/register/")
+
+    def test_registration_views_refuse_when_routed(self):
+        from emailotp import views
+
+        request = RequestFactory().get("/register/")
+        request.user = AnonymousUser()
+        with self.assertRaises(Http404):
+            views.register(request)
 
     def test_admin_pages_render_for_superuser(self):
         admin = User.objects.create_superuser("a@x.az", "a@x.az", "pw")

@@ -31,7 +31,7 @@
     <div class="section-cards">
       {% for s in hero_sections %}
       <a href="#{{ s.slug }}" class="section-card{% if s.highlight_card %} is-dark{% endif %}{% if not s.is_visible %} is-hidden-preview{% endif %}">
-        <span class="section-card-num">{% if s.number_label %}{{ s.number_label }}{% else %}{{ forloop.counter|stringformat:"02d" }}{% endif %}</span>
+        {% if s.number_label %}<span class="section-card-num">{{ s.number_label }}</span>{% endif %}
         <strong>{{ s.title }}</strong>
         {% if s.card_subtitle %}<span class="section-card-sub">{{ s.card_subtitle }}</span>{% endif %}
       </a>

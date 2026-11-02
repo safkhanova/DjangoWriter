@@ -5,7 +5,7 @@
     {% if section.show_category_filter %}
     <div class="filter-pills" data-filter-group="{{ section.slug }}">
       <button type="button" class="pill is-active" data-filter="">Hamısı</button>
-      {% for c in section.categories.all %}<button type="button" class="pill" data-filter="{{ c.slug }}">{{ c.name }}</button>{% endfor %}
+      {% for c in section.categories.all %}<button type="button" class="pill" data-filter="{{ c.slug }}">{{ c.label }}</button>{% endfor %}
     </div>
     {% endif %}
     {% include "site/partials/archive_table.html" %}

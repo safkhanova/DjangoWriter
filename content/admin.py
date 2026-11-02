@@ -22,7 +22,7 @@ from .models import Article, ArticleBlock, ArticleImage, Category, Section, Tag
 class CategoryInline(TabularInline):
     model = Category
     extra = 0
-    fields = ("name", "order")
+    fields = ("name", "public_name", "order")
     ordering_field = "order"
     hide_ordering_field = True
     verbose_name_plural = "Növlər (bu bölmənin daxilində yazı növləri: Hekayə, Şeir, Qəzet ...)"

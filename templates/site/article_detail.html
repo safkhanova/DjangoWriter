@@ -13,7 +13,7 @@
     {% if preview_mode and not article.is_public %}
       <p class="preview-note">{% if article.status == "draft" %}Qaralama — ziyarətçilər bu səhifəni görmür.{% elif article.is_scheduled %}Planlaşdırılıb: {{ article.publish_at|date:"d.m.Y H:i" }} tarixində görünəcək.{% else %}Bölmə gizli olduğu üçün ziyarətçilər görmür.{% endif %}</p>
     {% endif %}
-    <span class="eyebrow">{{ article.category.name|default:section.title }}</span> {% include "site/partials/authorship_badge.html" %}
+    <span class="eyebrow">{{ article.category.label|default:section.title }}</span> {% include "site/partials/authorship_badge.html" %}
     <h1 class="article-title">{{ article.title }}</h1>
     {% if article.excerpt %}<p class="article-lead">{{ article.excerpt }}</p>{% endif %}
     <p class="meta">

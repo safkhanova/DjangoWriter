@@ -18,7 +18,7 @@
     {% if categories %}
     <nav class="filter-pills">
       <a class="pill{% if not active_category %} is-active{% endif %}" href="?{% if active_authorship %}kim={{ active_authorship }}{% endif %}">Hamısı</a>
-      {% for c in categories %}<a class="pill{% if active_category == c %} is-active{% endif %}" href="?nov={{ c.slug }}{% if active_authorship %}&kim={{ active_authorship }}{% endif %}">{{ c.name }}</a>{% endfor %}
+      {% for c in categories %}<a class="pill{% if active_category == c %} is-active{% endif %}" href="?nov={{ c.slug }}{% if active_authorship %}&kim={{ active_authorship }}{% endif %}">{{ c.label }}</a>{% endfor %}
     </nav>
     {% endif %}
 

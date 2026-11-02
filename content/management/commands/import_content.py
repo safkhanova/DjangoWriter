@@ -8,6 +8,7 @@ and for bulk content imports (instance/content/*.json). All keys are optional:
   contact_topics  ["Əməkdaşlıq", ...] (or {"name", "is_visible"})
   social_links    [{"name", "icon", "url"}]
   sections        [{"slug", "title", "layout", "theme", ..., "categories": [...], "cta_topic": "<topic name>"}]
+                  a category is "Name" or {"name", "public_name"} (label shown on the site)
   hero            {"name", "title_line_1", ..., "tags": [...], "active": true}
   articles        [{"section", "category", "title", ...}]
 
@@ -156,8 +157,11 @@ class Command(BaseCommand):
                 section.cta_topic = ContactTopic.objects.filter(name=topic_name).first()
             section.full_clean(exclude=["cta_topic"])
             section.save()
-            for i, name in enumerate(categories):
-                Category.objects.get_or_create(section=section, slug=az_slugify(name), defaults={"name": name, "order": i})
+            for i, cat in enumerate(categories):
+                cat = {"name": cat} if isinstance(cat, str) else dict(cat)
+                Category.objects.get_or_create(
+                    section=section, slug=az_slugify(cat["name"]), defaults={**cat, "order": i},
+                )
             self.log(f"{'+' if created else '~'} section {section.slug} ({len(categories)} types)")
 
     def import_article(self, item):

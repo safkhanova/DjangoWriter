@@ -1,4 +1,4 @@
-{% autoescape off %}{{ article.section.title }}{% if article.category %} · {{ article.category.name }}{% endif %}
+{% autoescape off %}{{ article.section.title }}{% if article.category %} · {{ article.category.label }}{% endif %}
 
 {{ article.title }}
 

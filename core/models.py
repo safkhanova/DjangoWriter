@@ -42,7 +42,8 @@ class SiteSettings(OptimizedImagesMixin, models.Model):
     show_contact_section = models.BooleanField("Əlaqə bölməsini göstər", default=True)
     show_subscribe_box = models.BooleanField(
         "Abunə formunu göstər", default=True,
-        help_text="Ziyarətçilər yeni yazılar haqqında e-poçt almaq üçün abunə ola bilər.",
+        help_text="Ziyarətçilər yeni yazılar haqqında e-poçt almaq üçün abunə ola bilər. "
+        "Söndürülsə, sayt abunə qəbul etmir; mövcud abunəçilər və bülletenlər admində qalır.",
     )
     subscribe_title = models.CharField("Abunə formunun başlığı", max_length=120, default="Yeni yazılardan xəbərdar olun")
     subscribe_text = models.CharField(

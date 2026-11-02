@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -6,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from core.forms import rate_limited
+from core.models import SiteSettings
 
 from .forms import PreferencesForm, SubscribeForm
 from .models import Subscriber
@@ -16,6 +18,10 @@ GENERIC_OK = "Təsdiq linki e-poçtunuza göndərildi. Abunəliyi tamamlamaq ü�
 
 @require_POST
 def subscribe(request):
+    # Form hidden in the admin: no public sign-ups. Confirm/manage/unsubscribe links of
+    # existing subscribers keep working, and the admin still manages the list.
+    if not SiteSettings.load().show_subscribe_box:
+        raise Http404
     form = SubscribeForm(request.POST)
     if not form.is_valid():
         return render(request, "newsletter/subscribe_page.html", {"form": form}, status=400)

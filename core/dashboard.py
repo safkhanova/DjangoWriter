@@ -16,6 +16,7 @@ def unread_messages_badge(request):
 def dashboard_callback(request, context):
     drafts = Article.objects.filter(status=Article.Status.DRAFT).select_related("section").order_by("-updated_at")[:6]
     recent = Article.objects.select_related("section").order_by("-updated_at")[:6]
+    articles = reverse("admin:content_article_changelist")
     context.update(
         {
             "quick_actions": [
@@ -27,11 +28,14 @@ def dashboard_callback(request, context):
                 {"title": "Saytı aç", "icon": "open_in_new", "url": reverse("core:home"), "new_tab": True},
             ],
             "stats": [
-                {"title": "Dərc olunmuş yazılar", "value": Article.objects.public().count()},
-                {"title": "Qaralamalar", "value": Article.objects.filter(status=Article.Status.DRAFT).count()},
+                {"title": "Dərc olunmuş yazılar", "value": Article.objects.public().count(),
+                 "url": articles + "?veziyyet=live"},
+                {"title": "Qaralamalar", "value": Article.objects.filter(status=Article.Status.DRAFT).count(),
+                 "url": articles + "?veziyyet=draft"},
                 {"title": "Yeni mesajlar", "value": ContactMessage.objects.filter(is_read=False, is_archived=False).count(),
                  "url": reverse("admin:core_contactmessage_changelist") + "?is_read__exact=0"},
-                {"title": "Aktiv abunəçilər", "value": Subscriber.objects.active().count()},
+                {"title": "Aktiv abunəçilər", "value": Subscriber.objects.active().count(),
+                 "url": reverse("admin:newsletter_subscriber_changelist") + "?status=active"},
             ],
             "drafts": drafts,
             "recent": recent,

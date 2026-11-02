@@ -14,10 +14,27 @@ def csv_safe(value) -> str:
     return f"'{text}" if text[:1] in ("=", "+", "-", "@", "\t", "\r") else text
 
 
+class SubscriberStatusFilter(admin.SimpleListFilter):
+    title = "Status"
+    parameter_name = "status"
+
+    def lookups(self, request, model_admin):
+        return [("active", "Aktiv"), ("pending", "Təsdiq gözləyir"), ("unsubscribed", "İmtina edib")]
+
+    def queryset(self, request, queryset):
+        if self.value() == "active":
+            return queryset & Subscriber.objects.active()
+        if self.value() == "pending":
+            return queryset.filter(is_confirmed=False, unsubscribed_at__isnull=True)
+        if self.value() == "unsubscribed":
+            return queryset.filter(unsubscribed_at__isnull=False)
+        return queryset
+
+
 @admin.register(Subscriber)
 class SubscriberAdmin(ModelAdmin):
     list_display = ("email", "name", "status_badge", "sections_list", "created_at")
-    list_filter = ("is_confirmed", "sections", ("unsubscribed_at", admin.EmptyFieldListFilter))
+    list_filter = (SubscriberStatusFilter, "sections")
     search_fields = ("email", "name")
     filter_horizontal = ("sections",)
     readonly_fields = ("created_at", "confirmed_at", "unsubscribed_at")

@@ -207,6 +207,14 @@ class NewsletterTests(TestCase):
         sub.refresh_from_db()
         self.assertFalse(sub.is_active)
 
+    def test_hidden_subscribe_box_closes_public_signup(self):
+        SiteSettings.objects.update_or_create(pk=1, defaults={"show_subscribe_box": False})
+        self.assertNotContains(self.client.get(reverse("core:home")), 'id="abune"')
+        self.assertEqual(self.subscribe("a@x.az", [self.lit]).status_code, 404)
+        self.assertFalse(Subscriber.objects.exists())
+        sub = Subscriber.objects.create(email="old@x.az", is_confirmed=True)
+        self.assertEqual(self.client.get(reverse("newsletter:manage", args=[sub.token])).status_code, 200)
+
     def test_honeypot(self):
         self.client.post(reverse("newsletter:subscribe"), {"email": "bot@x.az", "website": "spam"})
         self.assertFalse(Subscriber.objects.exists())
@@ -267,6 +275,24 @@ class AdminTests(TestCase):
         request.user = AnonymousUser()
         with self.assertRaises(Http404):
             views.register(request)
+
+    def test_dashboard_counts_link_to_matching_lists(self):
+        admin_user = User.objects.create_superuser("boss@x.az", "boss@x.az", "pw-12345678")
+        self.client.force_login(admin_user)
+        lit = Section.objects.get(slug="edebiyyat")
+        make_article(lit, title="Canlı")
+        make_article(lit, title="Qaralama", status=Article.Status.DRAFT)
+        hidden = Section.objects.create(title="Gizli", is_visible=False)
+        make_article(hidden, title="Gizli bölmədə")
+        Subscriber.objects.create(email="on@x.az", is_confirmed=True)
+        Subscriber.objects.create(email="wait@x.az")
+        stats = {s["title"]: s for s in self.client.get(reverse("admin:index")).context["stats"]}
+        for title, model in (("Dərc olunmuş yazılar", Article), ("Qaralamalar", Article), ("Aktiv abunəçilər", Subscriber)):
+            response = self.client.get(stats[title]["url"])
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.context["cl"].result_count, stats[title]["value"], title)
+        self.assertEqual(stats["Dərc olunmuş yazılar"]["value"], 1)
+        self.assertEqual(stats["Aktiv abunəçilər"]["value"], 1)
 
     def test_admin_pages_render_for_superuser(self):
         admin = User.objects.create_superuser("a@x.az", "a@x.az", "pw")

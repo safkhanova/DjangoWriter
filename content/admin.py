@@ -160,7 +160,8 @@ class ScheduledFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         now = timezone.now()
         if self.value() == "live":
-            return queryset.filter(status=Article.Status.PUBLISHED, publish_at__lte=now)
+            # same rule as Article.objects.public() (and the dashboard count)
+            return queryset.filter(status=Article.Status.PUBLISHED, publish_at__lte=now, section__is_visible=True)
         if self.value() == "scheduled":
             return queryset.filter(status=Article.Status.PUBLISHED, publish_at__gt=now)
         if self.value() == "draft":
